@@ -39,10 +39,14 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
-        $DOMNodeList = iterator_to_array($item->documentElement->childNodes);
+        if ($item instanceof \DOMDocument) {
+            $DOMNodeList = iterator_to_array($item->documentElement->childNodes);
 
-        $body = array_shift($DOMNodeList);
-        $DOMNodeList = iterator_to_array($body->childNodes);
+            $body = array_shift($DOMNodeList);
+            $DOMNodeList = iterator_to_array($body->childNodes);
+        } else {
+            $DOMNodeList = iterator_to_array($item->childNodes);
+        }
 
         if (count($DOMNodeList) == 0) {
             return false;

@@ -93,4 +93,29 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->expectException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingDirectChild(withTagName('b')))));
     }
+
+    /**
+     * @test
+     */
+    public function nestedHavingDirectChildWithTagName_RightTagName_DoesNotThrowException()
+    {
+        $html = "<p><b></b></p>";
+
+        assertThat($html, is(htmlPiece(
+            havingDirectChild(
+                havingDirectChild(withTagName('b'))))));
+    }
+
+    /**
+     * @test
+     */
+    public function nestedHavingDirectChildWithTagName_WrongTagName_ThrowsException()
+    {
+        $html = "<p><b></b></p>";
+
+        $this->expectException(AssertionError::class);
+        assertThat($html, is(htmlPiece(
+            havingDirectChild(
+                havingDirectChild(withTagName('p'))))));
+    }
 }
