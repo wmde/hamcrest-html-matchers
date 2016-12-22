@@ -15,7 +15,7 @@ class HtmlMatcher implements Matcher
     /**
      * HtmlMatcher constructor.
      */
-    public function __construct(RootElementMatcher $elementMatcher = null)
+    public function __construct($elementMatcher = null)
     {
         $this->elementMatcher = $elementMatcher;
     }
@@ -31,18 +31,6 @@ class HtmlMatcher implements Matcher
         return new static($elementMatcher);
     }
 
-
-
-    /**
-     * Evaluates the matcher for argument <var>$item</var>.
-     *
-     * @param mixed $html the object against which the matcher is evaluated.
-     *
-     * @return boolean <code>true</code> if <var>$item</var> matches,
-     *   otherwise <code>false</code>.
-     *
-     * @see Hamcrest\BaseMatcher
-     */
     public function matches($html)
     {
         $internalErrors = libxml_use_internal_errors(true);

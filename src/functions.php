@@ -4,7 +4,7 @@ use Hamcrest\Util;
 /**
  * @return \Bekh6ex\HamcrestHtml\HtmlMatcher
  */
-function htmlPiece(\Bekh6ex\HamcrestHtml\RootElementMatcher $elementMatcher = null) {
+function htmlPiece($elementMatcher = null) {
     return \Bekh6ex\HamcrestHtml\HtmlMatcher::htmlPiece($elementMatcher);
 }
 
@@ -14,6 +14,9 @@ function htmlPiece(\Bekh6ex\HamcrestHtml\RootElementMatcher $elementMatcher = nu
  */
 function havingRootElement(\Bekh6ex\HamcrestHtml\TagMatcher $matcher = null) {
     return new \Bekh6ex\HamcrestHtml\RootElementMatcher($matcher);
+}
+function havingDirectChild($elementMatcher = null) {
+    return new \Bekh6ex\HamcrestHtml\DirectChildElementMatcher($elementMatcher);
 }
 
 /**
