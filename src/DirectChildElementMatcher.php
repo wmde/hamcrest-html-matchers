@@ -4,12 +4,13 @@ namespace Bekh6ex\HamcrestHtml;
 
 
 use Hamcrest\Description;
+use Hamcrest\Matcher;
 use Hamcrest\TypeSafeDiagnosingMatcher;
 
 class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
 {
     /**
-     * @var
+     * @var Matcher
      */
     private $matcher;
 
@@ -40,23 +41,26 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
         if ($item instanceof \DOMDocument) {
-            $DOMNodeList = iterator_to_array($item->documentElement->childNodes);
+            $directChildren = iterator_to_array($item->documentElement->childNodes);
 
-            $body = array_shift($DOMNodeList);
-            $DOMNodeList = iterator_to_array($body->childNodes);
+            $body = array_shift($directChildren);
+            $directChildren = $body->childNodes;
         } else {
-            $DOMNodeList = iterator_to_array($item->childNodes);
+            $directChildren = $item->childNodes;
         }
 
-        if (count($DOMNodeList) == 0) {
-            return false;
-        }
-        $target = array_shift($DOMNodeList);
-        if ($this->matcher) {
-            return $target && $this->matcher->matches($target);
+        if (!$this->matcher) {
+            return count($directChildren) !== 0;
         }
 
-        return true;
+        foreach ($directChildren as $item) {
+            if ($this->matcher && $this->matcher->matches($item)) {
+                return true;
+            }
+        }
+
+
+        return false;
         // TODO: Implement matchesSafelyWithDiagnosticDescription() method.
     }
 }
