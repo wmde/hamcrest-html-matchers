@@ -1,0 +1,39 @@
+{
+    "name": "bekh6ex/hamcrest-html-matchers",
+    "description": "",
+    "authors": [
+        {
+            "name": "Aleksey Bekh-Ivanov"
+        }
+    ],
+    "require": {
+        "php": "~5.5",
+        "hamcrest/hamcrest-php": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0"
+    },
+    "autoload": {
+        "files": [
+            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+        ],
+        "psr-4": {
+            "Bekh6ex\\HamcrestHtml\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bekh6ex\\HamcrestHtml\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
