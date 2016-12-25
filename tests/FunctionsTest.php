@@ -130,4 +130,29 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             havingDirectChild(
                 withTagName('b')))));
     }
+
+    /**
+     * @test
+     */
+    public function havingChildWithTagName_TargetTagIsNotFirst_FindsIt()
+    {
+        $html = "<p><b><i></i></b></p>";
+
+        assertThat($html, is(htmlPiece(
+            havingChild(
+                withTagName('i')))));
+    }
+
+    /**
+     * @test
+     */
+    public function havingChildWithTagName_TargetTagIsAbsent_ThrowsException()
+    {
+        $html = "<p><b><i></i></b></p>";
+
+        $this->expectException(AssertionError::class);
+        assertThat($html, is(htmlPiece(
+            havingChild(
+                withTagName('br')))));
+    }
 }
