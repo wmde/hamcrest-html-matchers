@@ -6,40 +6,6 @@ use Hamcrest\AssertionError;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @test
-     */
-    public function htmlPiece_WhenValidHtmlGiven_DoesNotThrowException()
-    {
-        $html = '<p></p>';
-
-        assertThat($html, is(htmlPiece()));
-    }
-
-    /**
-     * @test
-     */
-    public function htmlPiece_NonHtmlGiven_ThrowsAnException()
-    {
-        $html = /** @lang text */
-            '<p><a></p></a>';
-
-        $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece()));
-    }
-
-
-    /**
-     * @test
-     */
-    public function htmlPiece_HasRootElement_DoesNotThrowException()
-    {
-        $html = '<p></p>';
-
-        assertThat($html, is(htmlPiece(havingRootElement())));
-    }
-
     /**
      * @test
      */
@@ -54,105 +20,78 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @dataProvider dataProvider_ElementExists
      */
-    public function withTagName_RightTagDescriptor_DoesNotThrowException()
-    {
-        $html = '<p><b></b></p>';
-
-        assertThat($html, is(htmlPiece(havingRootElement(withTagName('p')))));
+    public function matcherCanFindElement($html, $matcher) {
+        assertThat($html, is(htmlPiece($matcher)));
     }
 
     /**
      * @test
+     * @dataProvider dataProvider_ElementDoesNotExist
      */
-    public function withTagName_WrongsTagDescriptor_ThrowsException()
-    {
-        $html = '<p><b></b></p>';
-
+    public function matcherCantFindElement($html, $matcher) {
         $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece(havingRootElement(withTagName('b')))));
+        assertThat($html, is(htmlPiece($matcher)));
     }
 
-    /**
-     * @test
-     */
-    public function havingDirectChild_HasDirectChild_DoesNotThrowException()
+    public function dataProvider_ElementExists()
     {
-        $html = "<p></p>";
-
-        assertThat($html, is(htmlPiece(havingDirectChild())));
+        return [
+            'htmlPiece - simple case' => [
+                '<p></p>',
+                null
+            ],
+            'havingRootElement - has root element' => [
+                '<p></p>',
+                havingRootElement()
+            ],
+            'withTagName - simple case' => [
+                '<p><b></b></p>',
+                havingRootElement(withTagName('p'))
+            ],
+            'havingDirectChild - without qualifier' => [
+                '<p></p>',
+                havingDirectChild()
+            ],
+            'havingDirectChild - nested structure' => [
+                '<p><b></b></p>',
+                havingDirectChild(havingDirectChild(withTagName('b')))
+            ],
+            'havingChild - target tag is not first' => [
+                '<i></i><b></b>',
+                havingChild(withTagName('b'))
+            ],
+            'havingChild - target tag is nested' => [
+                '<p><b><i></i></b></p>',
+                havingChild(withTagName('i'))
+            ],
+        ];
     }
 
-    /**
-     * @test
-     */
-    public function havingDirectChildWithTagName_DoesntHaveDirectChildWithThatTag_ThrowsException()
+    public function dataProvider_ElementDoesNotExist()
     {
-        $html = "<p></p>";
-
-        $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece(havingDirectChild(withTagName('b')))));
-    }
-
-    /**
-     * @test
-     */
-    public function nestedHavingDirectChildWithTagName_RightTagName_DoesNotThrowException()
-    {
-        $html = "<p><b></b></p>";
-
-        assertThat($html, is(htmlPiece(
-            havingDirectChild(
-                havingDirectChild(withTagName('b'))))));
-    }
-
-    /**
-     * @test
-     */
-    public function nestedHavingDirectChildWithTagName_WrongTagName_ThrowsException()
-    {
-        $html = "<p><b></b></p>";
-
-        $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece(
-            havingDirectChild(
-                havingDirectChild(withTagName('p'))))));
-    }
-
-    /**
-     * @test
-     */
-    public function havingDirectChildWithTagName_TargetTagIsNotFirst_FindsIt()
-    {
-        $html = "<i></i><b></b>";
-
-        assertThat($html, is(htmlPiece(
-            havingDirectChild(
-                withTagName('b')))));
-    }
-
-    /**
-     * @test
-     */
-    public function havingChildWithTagName_TargetTagIsNotFirst_FindsIt()
-    {
-        $html = "<p><b><i></i></b></p>";
-
-        assertThat($html, is(htmlPiece(
-            havingChild(
-                withTagName('i')))));
-    }
-
-    /**
-     * @test
-     */
-    public function havingChildWithTagName_TargetTagIsAbsent_ThrowsException()
-    {
-        $html = "<p><b><i></i></b></p>";
-
-        $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece(
-            havingChild(
-                withTagName('br')))));
+        return [
+            'htmlPiece - messed up tags' => [
+                '<p><a></p></a>',
+                null
+            ],
+            'withTagName - simple case' => [
+                '<p><b></b></p>',
+                havingRootElement(withTagName('b'))
+            ],
+            'havingDirectChild - single element' => [
+                '<p></p>',
+                havingDirectChild(withTagName('b'))
+            ],
+            'havingDirectChild - nested matcher' => [
+                '<p><b></b></p>',
+                havingDirectChild(havingDirectChild(withTagName('p')))
+            ],
+            'havingChild - target tag is absent' => [
+                '<p><b><i></i></b></p>',
+                havingChild(withTagName('br'))
+            ],
+        ];
     }
 }
