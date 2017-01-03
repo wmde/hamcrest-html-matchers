@@ -31,7 +31,8 @@ class TagNameMatcher extends TagMatcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('with tag name ')
+            ->appendDescriptionOf($this->tagNameMatcher);
     }
 
     /**
@@ -42,6 +43,8 @@ class TagNameMatcher extends TagMatcher
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
+        $mismatchDescription->appendText("tag name ");
+        $this->tagNameMatcher->describeMismatch($item->tagName, $mismatchDescription);
         return $this->tagNameMatcher->matches($item->tagName);
     }
 }

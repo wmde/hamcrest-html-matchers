@@ -3,9 +3,10 @@
 namespace Bekh6ex\HamcrestHtml;
 
 use Hamcrest\Description;
+use Hamcrest\DiagnosingMatcher;
 use Hamcrest\Matcher;
 
-class HtmlMatcher implements Matcher
+class HtmlMatcher extends DiagnosingMatcher
 {
     /**
      * @var RootElementMatcher
@@ -26,53 +27,36 @@ class HtmlMatcher implements Matcher
      */
     public static function htmlPiece($elementMatcher= null)
     {
-
-
         return new static($elementMatcher);
     }
 
-    public function matches($html)
-    {
-        $internalErrors = libxml_use_internal_errors(true);
-        $DOMDocument = new \DOMDocument();
+//    public function matches($html)
+//    {
+//        $internalErrors = libxml_use_internal_errors(true);
+//        $DOMDocument = new \DOMDocument();
+//
+//        if (!@$DOMDocument->loadHTML($html)) {
+//            return false;
+//        }
+//
+//
+//        $errors = libxml_get_errors();
+//        libxml_clear_errors();
+//        libxml_use_internal_errors($internalErrors);
+//
+//        $result = true;
+//        foreach ($errors as $error) {
+//            $result = false;
+//        }
+//
+//        if ($this->elementMatcher) {
+//            return $result && $this->elementMatcher->matches($DOMDocument);
+//        }
+//
+//        return $result;
+//
+//    }
 
-        if (!@$DOMDocument->loadHTML($html)) {
-            return false;
-        }
-
-
-        $errors = libxml_get_errors();
-        libxml_clear_errors();
-        libxml_use_internal_errors($internalErrors);
-
-        $result = true;
-        foreach ($errors as $error) {
-            $result = false;
-        }
-
-        if ($this->elementMatcher) {
-            return $result && $this->elementMatcher->matches($DOMDocument);
-        }
-
-        return $result;
-
-    }
-
-    /**
-     * Generate a description of why the matcher has not accepted the item.
-     * The description will be part of a larger description of why a matching
-     * failed, so it should be concise.
-     * This method assumes that <code>matches($item)</code> is false, but
-     * will not check this.
-     *
-     * @param mixed $item The item that the Matcher has rejected.
-     * @param Description $description
-     * @return
-     */
-    public function describeMismatch($item, Description $description)
-    {
-        // TODO: Implement describeMismatch() method.
-    }
 
     /**
      * Generates a description of the object.  The description may be part
@@ -84,6 +68,47 @@ class HtmlMatcher implements Matcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('valid html piece ');
+        if ($this->elementMatcher) {
+            $description->appendDescriptionOf($this->elementMatcher);
+        }
+    }
+
+    protected function matchesWithDiagnosticDescription($html, Description $mismatchDescription)
+    {
+        $internalErrors = libxml_use_internal_errors(true);
+        $document = new \DOMDocument();
+
+        if (!@$document->loadHTML($html)) {
+            $mismatchDescription->appendText('there was some parsing error');
+            return false;
+        }
+
+        $errors = libxml_get_errors();
+        libxml_clear_errors();
+        libxml_use_internal_errors($internalErrors);
+
+        $result = true;
+        /** @var \LibXMLError $error */
+        foreach ($errors as $error) {
+            $mismatchDescription->appendText('there was parsing error: ')
+                ->appendText(trim($error->message))
+                ->appendText(' on line ')
+                ->appendText($error->line);
+            $result = false;
+        }
+
+        if ($result === false) {
+            return $result;
+        }
+        $mismatchDescription->appendText('valid html piece ');
+
+        if ($this->elementMatcher) {
+            $result = $this->elementMatcher->matches($document);
+            $this->elementMatcher->describeMismatch($document, $mismatchDescription);
+            return $result;
+        }
+
+        return $result;
     }
 }

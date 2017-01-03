@@ -31,7 +31,10 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('having direct child ');
+        if ($this->matcher) {
+            $description->appendDescriptionOf($this->matcher);
+        }
     }
 
     /**
@@ -49,16 +52,26 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
             $directChildren = $item->childNodes;
         }
 
+        if ($directChildren->length === 0) {
+            $mismatchDescription->appendText('with no direct children');
+            return false;
+        }
+
+        $childWord = $directChildren->length == 1 ? 'child' : 'children';
+
+        $mismatchDescription->appendText("with direct {$childWord} ");
+
         if (!$this->matcher) {
             return count($directChildren) !== 0;
         }
 
-        foreach ($directChildren as $item) {
-            if ($this->matcher && $this->matcher->matches($item)) {
+        foreach ($directChildren as $child) {
+            if ($this->matcher && $this->matcher->matches($child)) {
                 return true;
             }
         }
 
+        $this->matcher->describeMismatch($child, $mismatchDescription);
 
         return false;
         // TODO: Implement matchesSafelyWithDiagnosticDescription() method.

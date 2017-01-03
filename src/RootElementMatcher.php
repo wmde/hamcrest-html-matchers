@@ -31,7 +31,10 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('having root element ');
+        if ($this->tagMatcher) {
+            $description->appendDescriptionOf($this->tagMatcher);
+        }
     }
 
     /**
@@ -47,11 +50,21 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher
         $body = array_shift($DOMNodeList);
         $DOMNodeList = iterator_to_array($body->childNodes);
         if (count($DOMNodeList) > 1) {
+            //TODO Test this description
+            $mismatchDescription->appendText('having ' . count($DOMNodeList) . ' root elements ');
             return false;
         }
+
         $target = array_shift($DOMNodeList);
+        if (!$target) {
+            //TODO Reproduce?
+            $mismatchDescription->appendText('having no root elements ');
+            return false;
+        }
         if ($this->tagMatcher) {
-            return $target && $this->tagMatcher->matches($target);
+            $mismatchDescription->appendText('root element ');
+            $this->tagMatcher->describeMismatch($target, $mismatchDescription);
+            return $this->tagMatcher->matches($target);
         }
 
         return (bool)$target;

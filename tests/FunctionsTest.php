@@ -3,6 +3,7 @@
 namespace Bekh6ex\HamcrestHtml\Test;
 
 use Hamcrest\AssertionError;
+use Hamcrest\Matcher;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,9 +31,15 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider dataProvider_ElementDoesNotExist
      */
-    public function matcherCantFindElement($html, $matcher) {
-        $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece($matcher)));
+    public function matcherCantFindElement($html, $matcher, Matcher $messageMatcher) {
+        try {
+            assertThat($html, is(htmlPiece($matcher)));
+        } catch (AssertionError $e) {
+            assertThat($e->getMessage(), $messageMatcher);
+            return;
+        }
+
+        $this->fail("Didn't catch expected exception");
     }
 
     public function dataProvider_ElementExists()
@@ -72,25 +79,36 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function dataProvider_ElementDoesNotExist()
     {
         return [
+            //TODO add empty string case
             'htmlPiece - messed up tags' => [
                 '<p><a></p></a>',
-                null
+                null,
+                allOf(containsString('html piece'), containsString('there was parsing error'))
             ],
             'withTagName - simple case' => [
                 '<p><b></b></p>',
-                havingRootElement(withTagName('b'))
+                havingRootElement(withTagName('b')),
+                allOf(containsString('having root element'), containsString('with tag name "b"'), containsString('root element tag name was "p"')),
+            ],
+            'havingDirectChild - no direct child' => [
+                '<p></p>',
+                havingDirectChild(havingDirectChild()),
+                allOf(containsString('having direct child'), containsString('with direct child with no direct children')),
             ],
             'havingDirectChild - single element' => [
                 '<p></p>',
-                havingDirectChild(withTagName('b'))
+                havingDirectChild(withTagName('b')),
+                allOf(containsString('having direct child'), containsString('with tag name "b"')),
             ],
             'havingDirectChild - nested matcher' => [
                 '<p><b></b></p>',
-                havingDirectChild(havingDirectChild(withTagName('p')))
+                havingDirectChild(havingDirectChild(withTagName('p'))),
+                containsString('TODO add text') //TODO add text
             ],
             'havingChild - target tag is absent' => [
                 '<p><b><i></i></b></p>',
-                havingChild(withTagName('br'))
+                havingChild(withTagName('br')),
+                containsString('TODO add text') //TODO add text
             ],
         ];
     }
