@@ -73,6 +73,14 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p><b><i></i></b></p>',
                 havingChild(withTagName('i'))
             ],
+            'withAttribute - select element by attribute name only' => [
+                '<p><input name="something"/></p>',
+                havingChild(withAttribute('name'))
+            ],
+            'withAttribute - select element by attribute name and value' => [
+                '<p><input name="something"/></p>',
+                havingChild(withAttribute('name')->havingValue('something'))
+            ],
         ];
     }
 
@@ -120,6 +128,19 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 havingChild(withTagName('br')),
                 both(containsString('having child with tag name "br"'))
                     ->andAlso(containsString('having no children with tag name "br"'))
+            ],
+
+            'withAttribute - select element by attribute name only' => [
+                '<p><input name="something"/></p>',
+                havingChild(withAttribute('value')),
+                both(containsString('having child with attribute "value"'))
+                    ->andAlso(containsString('having no children with attribute "value"'))
+            ],
+            'withAttribute - select element by attribute name and value' => [
+                '<p><input name="something-else"/></p>',
+                havingChild(withAttribute('name')->havingValue('something')),
+                both(containsString('having child with attribute "name" having value "something"'))
+                    ->andAlso(containsString('having no children with attribute "name" having value "something'))
             ],
         ];
     }

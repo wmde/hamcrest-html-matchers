@@ -30,3 +30,11 @@ function havingChild($elementMatcher = null) {
 function withTagName($tagName) {
     return new \Bekh6ex\HamcrestHtml\TagNameMatcher(Util::wrapValueWithIsEqual($tagName));
 }
+
+/**
+ * @param $attributeName
+ * @return \Bekh6ex\HamcrestHtml\AttributeMatcher
+ */
+function withAttribute($attributeName) {
+    return new \Bekh6ex\HamcrestHtml\AttributeMatcher(Util::wrapValueWithIsEqual($attributeName));
+}
