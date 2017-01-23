@@ -9,7 +9,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 class ChildElementMatcher extends TypeSafeDiagnosingMatcher
 {
     /**
-     * @var Matcher
+     * @var Matcher|null
      */
     private $matcher;
 
@@ -30,7 +30,10 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('having child ');
+        if ($this->matcher) {
+            $description->appendDescriptionOf($this->matcher);
+        }
     }
 
     /**
@@ -48,18 +51,22 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
             $directChildren = $item->childNodes;
         }
 
-        if (!$this->matcher) {
-            return count($directChildren) !== 0;
+        if ($directChildren->length === 0) {
+            $mismatchDescription->appendText('having no children');
+            return false;
         }
 
-        foreach (new XmlNodeRecursiveIterator($directChildren) as $item) {
-            if ($this->matcher && $this->matcher->matches($item)) {
+        if (!$this->matcher) {
+            return $directChildren->length > 0;
+        }
+
+        foreach (new XmlNodeRecursiveIterator($directChildren) as $child) {
+            if ($this->matcher && $this->matcher->matches($child)) {
                 return true;
             }
         }
 
-
+        $mismatchDescription->appendText('having no children ')->appendDescriptionOf($this->matcher);
         return false;
-        // TODO: Implement matchesSafelyWithDiagnosticDescription() method.
     }
 }

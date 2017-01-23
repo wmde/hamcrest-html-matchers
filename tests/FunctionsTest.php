@@ -79,7 +79,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function dataProvider_ElementDoesNotExist()
     {
         return [
-            //TODO add empty string case
             'htmlPiece - messed up tags' => [
                 '<p><a></p></a>',
                 null,
@@ -88,27 +87,39 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             'withTagName - simple case' => [
                 '<p><b></b></p>',
                 havingRootElement(withTagName('b')),
-                allOf(containsString('having root element'), containsString('with tag name "b"'), containsString('root element tag name was "p"')),
+                allOf(containsString('having root element'),
+                    containsString('with tag name "b"'),
+                    containsString('root element tag name was "p"')),
             ],
             'havingDirectChild - no direct child' => [
                 '<p></p>',
                 havingDirectChild(havingDirectChild()),
-                allOf(containsString('having direct child'), containsString('with direct child with no direct children')),
+                allOf(containsString('having direct child'),
+                    containsString('with direct child with no direct children')),
             ],
             'havingDirectChild - single element' => [
                 '<p></p>',
                 havingDirectChild(withTagName('b')),
-                allOf(containsString('having direct child'), containsString('with tag name "b"')),
+                allOf(containsString('having direct child'),
+                    containsString('with tag name "b"')),
             ],
             'havingDirectChild - nested matcher' => [
                 '<p><b></b></p>',
                 havingDirectChild(havingDirectChild(withTagName('p'))),
-                containsString('TODO add text') //TODO add text
+                both(containsString('having direct child having direct child with tag name "p"'))
+                    ->andAlso(containsString('direct child with direct child tag name was "b"'))
+            ],
+            'havingChild - no children' => [
+                '<p></p>',
+                havingDirectChild(havingChild()),
+                both(containsString('having direct child having child'))
+                    ->andAlso(containsString('having no children'))
             ],
             'havingChild - target tag is absent' => [
                 '<p><b><i></i></b></p>',
                 havingChild(withTagName('br')),
-                containsString('TODO add text') //TODO add text
+                both(containsString('having child with tag name "br"'))
+                    ->andAlso(containsString('having no children with tag name "br"'))
             ],
         ];
     }

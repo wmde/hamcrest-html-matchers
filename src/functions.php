@@ -18,7 +18,7 @@ function havingRootElement(\Bekh6ex\HamcrestHtml\TagMatcher $matcher = null) {
 function havingDirectChild($elementMatcher = null) {
     return new \Bekh6ex\HamcrestHtml\DirectChildElementMatcher($elementMatcher);
 }
-function havingChild($elementMatcher) {
+function havingChild($elementMatcher = null) {
     return new \Bekh6ex\HamcrestHtml\ChildElementMatcher($elementMatcher);
 }
 
