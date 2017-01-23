@@ -3,7 +3,7 @@ This is the set of Hamcrest matchers for HTML assertrions
 
 Usage examples
 --------------
-Hamcrest allows to create pretty complicated and flexible assertions. Just remember:
+Hamcrest allows you to create pretty complicated and flexible assertions. Just remember:
 
 *"You can" does not mean "you should".*
 
@@ -38,17 +38,11 @@ Information about general Hamcrest usage can be found at [Hamcrest github reposi
 
 Available Matchers
 ------------------
-* [havingRootElement](../master/README.md#havingRootElement)
-* [havingDirectChild](../master/README.md#havingDirectChild)
-* [havingChild](../master/README.md#havingChild)
-* [withTagName](../master/README.md#withTagName)
-* [withAttribute](../master/README.md#withAttribute)
-* [havingTextContents](../master/README.md#havingTextContents)
-
-
-### havingRootElement
-
-* `havingRootElement` - checks given constraint against root element of HTML
+* `htmlPiece()` - checks that string is a valid HTML, parses it and passes control to given matcher if one present
+```php
+assertThat('<p></p>', is(htmlPiece())); // Just checking that string is a valid piece of HTML
+```
+* `havingRootElement` - checks given constraint against root element of HTML. *NOTE: Can be passed only to `htmlPiece()`*
 ```php
 assertThat('<p></p>', htmlPiece(havingRootElement(withTagName('p'))));
 ```
@@ -73,6 +67,8 @@ assertThat('<p><b></b></p>', htmlPiece(havingChild(withTagName(
 * `withAttribute` - checks given constraint against elements attributes comparing names and values
 ```php
 assertThat('<p><input required></p>', htmlPiece(havingChild(withAttribute('required'))));
+```
+```php
 assertThat('<p><input data-value="some data"></p>', htmlPiece(havingChild(
     withAttribute(startsWith('data-'))->havingValue('some data'))));
 ```
