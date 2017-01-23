@@ -20,7 +20,7 @@ class XmlNodeRecursiveIterator extends \ArrayIterator
         /** @var \DOMElement $node */
         foreach ($nodeList as $node) {
             $queue[] = $node;
-            if (property_exists($node, 'childNodes')) {
+            if (property_exists($node, 'childNodes') && $node->childNodes !== null) {
                 $queue = $this->addElementsToQueue($queue, $node->childNodes);
             }
         }

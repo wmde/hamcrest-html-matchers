@@ -38,3 +38,7 @@ function withTagName($tagName) {
 function withAttribute($attributeName) {
     return new \Bekh6ex\HamcrestHtml\AttributeMatcher(Util::wrapValueWithIsEqual($attributeName));
 }
+
+function havingTextContents($text) {
+    return new \Bekh6ex\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
+}

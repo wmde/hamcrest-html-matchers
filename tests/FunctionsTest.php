@@ -81,6 +81,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p><input name="something"/></p>',
                 havingChild(withAttribute('name')->havingValue('something'))
             ],
+            'havingTextContents' => [
+                '<p>this is some text</p>',
+                havingChild(havingTextContents(containsString('some text')))
+            ],
         ];
     }
 
@@ -140,7 +144,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p><input name="something-else"/></p>',
                 havingChild(withAttribute('name')->havingValue('something')),
                 both(containsString('having child with attribute "name" having value "something"'))
-                    ->andAlso(containsString('having no children with attribute "name" having value "something'))
+                    ->andAlso(containsString('having no children with attribute "name" having value "something"'))
+            ],
+            'havingTextContents' => [
+                '<div><p>this is some text</p></div>',
+                havingChild(havingTextContents('this is another text')),
+                both(containsString('having child having text contents "this is another text"'))
+                    ->andAlso(containsString('no children having text contents "this is another text"'))
             ],
         ];
     }
