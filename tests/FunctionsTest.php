@@ -1,6 +1,6 @@
 <?php
 
-namespace Bekh6ex\HamcrestHtml\Test;
+namespace WMDE\HamcrestHtml\Test;
 
 use Hamcrest\AssertionError;
 use Hamcrest\Matcher;

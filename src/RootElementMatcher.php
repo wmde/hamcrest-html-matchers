@@ -1,6 +1,6 @@
 <?php
 
-namespace Bekh6ex\HamcrestHtml;
+namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
 use Hamcrest\TypeSafeDiagnosingMatcher;

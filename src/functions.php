@@ -2,43 +2,43 @@
 use Hamcrest\Util;
 
 /**
- * @return \Bekh6ex\HamcrestHtml\HtmlMatcher
+ * @return \WMDE\HamcrestHtml\HtmlMatcher
  */
 function htmlPiece($elementMatcher = null) {
-    return \Bekh6ex\HamcrestHtml\HtmlMatcher::htmlPiece($elementMatcher);
+    return \WMDE\HamcrestHtml\HtmlMatcher::htmlPiece($elementMatcher);
 }
 
 /**
- * @param \Bekh6ex\HamcrestHtml\TagMatcher $matcher
- * @return \Bekh6ex\HamcrestHtml\RootElementMatcher
+ * @param \WMDE\HamcrestHtml\TagMatcher $matcher
+ * @return \WMDE\HamcrestHtml\RootElementMatcher
  */
-function havingRootElement(\Bekh6ex\HamcrestHtml\TagMatcher $matcher = null) {
-    return new \Bekh6ex\HamcrestHtml\RootElementMatcher($matcher);
+function havingRootElement(\WMDE\HamcrestHtml\TagMatcher $matcher = null) {
+    return new \WMDE\HamcrestHtml\RootElementMatcher($matcher);
 }
 function havingDirectChild($elementMatcher = null) {
-    return new \Bekh6ex\HamcrestHtml\DirectChildElementMatcher($elementMatcher);
+    return new \WMDE\HamcrestHtml\DirectChildElementMatcher($elementMatcher);
 }
 function havingChild($elementMatcher = null) {
-    return new \Bekh6ex\HamcrestHtml\ChildElementMatcher($elementMatcher);
+    return new \WMDE\HamcrestHtml\ChildElementMatcher($elementMatcher);
 }
 
 
 /**
  * @param string $tagName
- * @return \Bekh6ex\HamcrestHtml\TagNameMatcher
+ * @return \WMDE\HamcrestHtml\TagNameMatcher
  */
 function withTagName($tagName) {
-    return new \Bekh6ex\HamcrestHtml\TagNameMatcher(Util::wrapValueWithIsEqual($tagName));
+    return new \WMDE\HamcrestHtml\TagNameMatcher(Util::wrapValueWithIsEqual($tagName));
 }
 
 /**
  * @param $attributeName
- * @return \Bekh6ex\HamcrestHtml\AttributeMatcher
+ * @return \WMDE\HamcrestHtml\AttributeMatcher
  */
 function withAttribute($attributeName) {
-    return new \Bekh6ex\HamcrestHtml\AttributeMatcher(Util::wrapValueWithIsEqual($attributeName));
+    return new \WMDE\HamcrestHtml\AttributeMatcher(Util::wrapValueWithIsEqual($attributeName));
 }
 
 function havingTextContents($text) {
-    return new \Bekh6ex\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
+    return new \WMDE\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
 }

@@ -1,5 +1,5 @@
 {
-    "name": "bekh6ex/hamcrest-html-matchers",
+    "name": "wmde/hamcrest-html-matchers",
     "description": "",
     "authors": [
         {
@@ -18,12 +18,12 @@
             "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
         ],
         "psr-4": {
-            "Bekh6ex\\HamcrestHtml\\": "src/"
+            "WMDE\\HamcrestHtml\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Bekh6ex\\HamcrestHtml\\Test\\": "tests/"
+            "WMDE\\HamcrestHtml\\Test\\": "tests/"
         }
     },
     "scripts": {
