@@ -15,14 +15,14 @@
         "phpunit/phpunit": "^5.2"
     },
     "autoload": {
-        "files": [
-            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-        ],
         "psr-4": {
             "WMDE\\HamcrestHtml\\": "src/"
         }
     },
     "autoload-dev": {
+        "files": [
+            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+        ],
         "psr-4": {
             "WMDE\\HamcrestHtml\\Test\\": "tests/"
         }
