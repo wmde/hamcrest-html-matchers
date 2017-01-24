@@ -9,6 +9,12 @@ use Hamcrest\Matcher;
 class HtmlMatcher extends DiagnosingMatcher
 {
     /**
+     * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
+     * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
+     */
+    const XML_UNKNOWN_TAG_ERROR_CODE = 801;
+
+    /**
      * @var RootElementMatcher
      */
     private $elementMatcher;
@@ -29,34 +35,6 @@ class HtmlMatcher extends DiagnosingMatcher
     {
         return new static($elementMatcher);
     }
-
-//    public function matches($html)
-//    {
-//        $internalErrors = libxml_use_internal_errors(true);
-//        $DOMDocument = new \DOMDocument();
-//
-//        if (!@$DOMDocument->loadHTML($html)) {
-//            return false;
-//        }
-//
-//
-//        $errors = libxml_get_errors();
-//        libxml_clear_errors();
-//        libxml_use_internal_errors($internalErrors);
-//
-//        $result = true;
-//        foreach ($errors as $error) {
-//            $result = false;
-//        }
-//
-//        if ($this->elementMatcher) {
-//            return $result && $this->elementMatcher->matches($DOMDocument);
-//        }
-//
-//        return $result;
-//
-//    }
-
 
     /**
      * Generates a description of the object.  The description may be part
@@ -91,6 +69,10 @@ class HtmlMatcher extends DiagnosingMatcher
         $result = true;
         /** @var \LibXMLError $error */
         foreach ($errors as $error) {
+            if ($this->isUnknownTagError($error)) {
+                continue;
+            }
+
             $mismatchDescription->appendText('there was parsing error: ')
                 ->appendText(trim($error->message))
                 ->appendText(' on line ')
@@ -110,5 +92,10 @@ class HtmlMatcher extends DiagnosingMatcher
         }
 
         return $result;
+    }
+
+    private function isUnknownTagError(\LibXMLError $error)
+    {
+        return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
     }
 }
