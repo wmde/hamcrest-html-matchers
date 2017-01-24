@@ -1,6 +1,7 @@
 {
     "name": "wmde/hamcrest-html-matchers",
-    "description": "",
+    "type": "library",
+    "description": "Set of Hamcrest matchers for HTML assertrions ",
     "authors": [
         {
             "name": "Aleksey Bekh-Ivanov"
@@ -8,10 +9,10 @@
     ],
     "require": {
         "php": ">=5.5",
-        "hamcrest/hamcrest-php": "^2.0"
+        "hamcrest/hamcrest-php": "^1.1.1||^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.0"
+        "phpunit/phpunit": "^5.2"
     },
     "autoload": {
         "files": [
@@ -33,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "0.1.x-dev"
         }
     }
 }
