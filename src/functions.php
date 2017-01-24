@@ -1,4 +1,5 @@
 <?php
+use Hamcrest\Matcher;
 use Hamcrest\Util;
 
 /**
@@ -24,7 +25,7 @@ function havingChild($elementMatcher = null) {
 
 
 /**
- * @param string $tagName
+ * @param Matcher|string $tagName
  * @return \WMDE\HamcrestHtml\TagNameMatcher
  */
 function withTagName($tagName) {
@@ -32,13 +33,17 @@ function withTagName($tagName) {
 }
 
 /**
- * @param $attributeName
+ * @param Matcher|string $attributeName
  * @return \WMDE\HamcrestHtml\AttributeMatcher
  */
 function withAttribute($attributeName) {
     return new \WMDE\HamcrestHtml\AttributeMatcher(Util::wrapValueWithIsEqual($attributeName));
 }
 
+/**
+ * @param Matcher|string $text
+ * @return \WMDE\HamcrestHtml\TextContentsMatcher
+ */
 function havingTextContents($text) {
     return new \WMDE\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
 }
