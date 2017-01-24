@@ -44,6 +44,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function dataProvider_ElementExists()
     {
+        //TODO Add tagMatching('<input name="asd" class="qwerty error ehehey"/>')
+
         return [
             'htmlPiece - simple case' => [
                 '<p></p>',
@@ -80,6 +82,14 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             'withAttribute - select element by attribute name and value' => [
                 '<p><input name="something"/></p>',
                 havingChild(withAttribute('name')->havingValue('something'))
+            ],
+            'withClass - exact match' => [
+                '<p class="test-class"></p>',
+                havingChild(withClass('test-class'))
+            ],
+            'withClass - one of the classes' => [
+                '<p class="class1 class2 class3"></p>',
+                havingChild(withClass('class2'))
             ],
             'havingTextContents' => [
                 '<p>this is some text</p>',
@@ -145,6 +155,12 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 havingChild(withAttribute('name')->havingValue('something')),
                 both(containsString('having child with attribute "name" having value "something"'))
                     ->andAlso(containsString('having no children with attribute "name" having value "something"'))
+            ],
+            'withClass - no class' => [
+                '<p></p>',
+                havingChild(withClass('test-class')),
+                both(containsString('having child with class "test-class"'))
+                    ->andAlso(containsString('having no children with class "test-class"'))
             ],
             'havingTextContents' => [
                 '<div><p>this is some text</p></div>',

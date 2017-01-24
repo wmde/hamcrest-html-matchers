@@ -41,6 +41,16 @@ function withAttribute($attributeName) {
 }
 
 /**
+ * @param Matcher|string $class
+ * @return \WMDE\HamcrestHtml\ClassMatcher
+ */
+function withClass($class) {
+    //TODO don't allow to call with empty string
+
+    return new \WMDE\HamcrestHtml\ClassMatcher(Util::wrapValueWithIsEqual($class));
+}
+
+/**
  * @param Matcher|string $text
  * @return \WMDE\HamcrestHtml\TextContentsMatcher
  */
