@@ -22,7 +22,7 @@ class ComplexTagMatcher extends TagMatcher
     /**
      * @var string
      */
-    private $tagHtmlRepresentation;
+    private $tagHtmlOutline;
 
     /**
      * @var Matcher
@@ -30,19 +30,19 @@ class ComplexTagMatcher extends TagMatcher
     private $matcher;
 
     /**
-     * @param $tagHtmlRepresentation
+     * @param string $htmlOutline
      * @return self
      */
-    public static function tagMatching($tagHtmlRepresentation)
+    public static function tagMatchingOutline($htmlOutline)
     {
-        return new self($tagHtmlRepresentation);
+        return new self($htmlOutline);
     }
 
     public function __construct($tagHtmlRepresentation)
     {
         parent::__construct();
 
-        $this->tagHtmlRepresentation = $tagHtmlRepresentation;
+        $this->tagHtmlOutline = $tagHtmlRepresentation;
         $this->matcher = $this->createMatcherFromHtml($tagHtmlRepresentation);
     }
 
@@ -56,7 +56,9 @@ class ComplexTagMatcher extends TagMatcher
      */
     public function describeTo(Description $description)
     {
-        // TODO: Implement describeTo() method.
+        $description->appendText('tag matching outline `')
+            ->appendText($this->tagHtmlOutline)
+            ->appendText('` ');
     }
 
     /**
@@ -65,17 +67,23 @@ class ComplexTagMatcher extends TagMatcher
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
-        return $this->matcher->matches($item);
+        $result = $this->matcher->matches($item);
+        if (!$result) {
+            $mismatchDescription->appendText('was `')
+                ->appendText($this->elementToString($item))
+                ->appendText('`');
+        }
+        return $result;
     }
 
-    private function createMatcherFromHtml($html)
+    private function createMatcherFromHtml($htmlOutline)
     {
-        $document = $this->parseHtml($html);
+        $document = $this->parseHtml($htmlOutline);
         $targetTag = $this->getSingleTagFromThe($document);
 
         $this->assertTagDoesNotContainChildren($targetTag);
 
-        $attributeMatchers = $this->createAttributeMatchers($html, $targetTag);
+        $attributeMatchers = $this->createAttributeMatchers($htmlOutline, $targetTag);
         $classMatchers = $this->createClassMatchers($targetTag);
 
         return AllOf::allOf(
@@ -194,5 +202,13 @@ class ComplexTagMatcher extends TagMatcher
             $classMatchers[] = new ClassMatcher(IsEqual::equalTo($expectedClass));
         }
         return $classMatchers;
+    }
+
+    private function elementToString(\DOMElement $element)
+    {
+        $newdoc = new \DOMDocument();
+        $cloned = $element->cloneNode(true);
+        $newdoc->appendChild($newdoc->importNode($cloned,true));
+        return trim($newdoc->saveHTML());
     }
 }

@@ -95,6 +95,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p>this is some text</p>',
                 havingChild(havingTextContents(containsString('some text')))
             ],
+            'tagMatchingOutline' => [
+                '<form><input id="ip-password" class="pretty important" name="password"></form>',
+                havingChild(tagMatchingOutline('<input name="password" class="important">'))
+            ],
         ];
     }
 
@@ -167,6 +171,12 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 havingChild(havingTextContents('this is another text')),
                 both(containsString('having child having text contents "this is another text"'))
                     ->andAlso(containsString('no children having text contents "this is another text"'))
+            ],
+            'tagMatchingOutline' => [
+                '<input id="ip-password" class="pretty">',
+                havingRootElement(tagMatchingOutline('<input name="password" class="important">')),
+                both(containsString('matching outline `<input name="password" class="important">`'))
+                    ->andAlso(containsString('was `<input id="ip-password" class="pretty">`'))
             ],
         ];
     }

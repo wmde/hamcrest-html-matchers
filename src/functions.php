@@ -57,3 +57,11 @@ function withClass($class) {
 function havingTextContents($text) {
     return new \WMDE\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
 }
+
+/**
+ * @param string $htmlOutline
+ * @return \WMDE\HamcrestHtml\ComplexTagMatcher
+ */
+function tagMatchingOutline($htmlOutline) {
+    return \WMDE\HamcrestHtml\ComplexTagMatcher::tagMatchingOutline($htmlOutline);
+}

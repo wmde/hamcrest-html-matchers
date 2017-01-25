@@ -20,7 +20,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
     public function assertPasses_WhenTagInHtmlHasSameTagName() {
         $html = '<p></p>';
 
-        assertThat($html, is(htmlPiece(havingChild(ComplexTagMatcher::tagMatching('<p/>')))));
+        assertThat($html, is(htmlPiece(havingChild(ComplexTagMatcher::tagMatchingOutline('<p/>')))));
     }
 
     /**
@@ -30,7 +30,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         $html = '<a></a>';
 
         $this->expectException(AssertionError::class);
-        assertThat($html, is(htmlPiece(havingChild(ComplexTagMatcher::tagMatching('<p/>')))));
+        assertThat($html, is(htmlPiece(havingChild(ComplexTagMatcher::tagMatchingOutline('<p/>')))));
     }
 
     /**
@@ -38,7 +38,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotCreateMatcherWithEmptyDescription() {
         $this->expectException(\Exception::class);
-        ComplexTagMatcher::tagMatching('');
+        ComplexTagMatcher::tagMatchingOutline('');
     }
 
     /**
@@ -46,7 +46,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotCreateMatcherExpectingTwoElements() {
         $this->expectException(\Exception::class);
-        ComplexTagMatcher::tagMatching('<p></p><b></b>');
+        ComplexTagMatcher::tagMatchingOutline('<p></p><b></b>');
     }
 
     /**
@@ -54,7 +54,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotCreateMatcherWithChildElement() {
         $this->expectException(\Exception::class);
-        ComplexTagMatcher::tagMatching('<p><b></b></p>');
+        ComplexTagMatcher::tagMatchingOutline('<p><b></b></p>');
     }
 
     /**
@@ -65,7 +65,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<p id="some-id"/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<p id="some-id"/>')))));
     }
 
     /**
@@ -75,7 +75,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         $html = '<p id="some-id"></p>';
 
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<p id="some-id"/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<p id="some-id"/>')))));
     }
 
     /**
@@ -86,7 +86,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<p id="some-id" onclick="void();"/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<p id="some-id" onclick="void();"/>')))));
     }
 
     /**
@@ -96,7 +96,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         $html = '<input required="anything">';
 
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<input required/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<input required/>')))));
     }
 
     /**
@@ -107,7 +107,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<input attr1=""/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<input attr1=""/>')))));
     }
 
     /**
@@ -117,7 +117,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         $html = '<input class="class1 class2">';
 
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<input class="class2"/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<input class="class2"/>')))));
     }
 
     /**
@@ -128,7 +128,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<input class="class3"/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<input class="class3"/>')))));
     }
 
     /**
@@ -138,6 +138,6 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         $html = '<input class="class1">';
 
         assertThat($html, is(htmlPiece(havingChild(
-            ComplexTagMatcher::tagMatching('<input class="   class1   "/>')))));
+            ComplexTagMatcher::tagMatchingOutline('<input class="   class1   "/>')))));
     }
 }
