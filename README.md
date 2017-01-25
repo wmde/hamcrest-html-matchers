@@ -78,3 +78,20 @@ assertThat('<p><input data-value="some data"></p>', htmlPiece(havingChild(
 assertThat('<div><p>this is Some Text</p></div>', htmlPiece(havingChild(
     havingTextContents(containsString('some text')->ignoringCase()))));
 ```
+
+* `tagMatchingOutline` - tolerantly checks that tag matches given *outline* (*outline* - tag representation in HTML format)\
+
+  That means:
+    * Element's tag name is equal to outline's tag name
+    * Element has all the attributes that outline has with the same values. If element has more attributes than outline it still matches. 
+      * **NOTE:** Attribute `class` is treated in a different manner (see further). 
+      * **NOTE:** If attribute outlined is boolean, than its value in element won't be checked, just presence.
+    * Element has all html classes that outline has.
+    
+This will pass:
+```php
+assertThat('<form><input id="id-pass" name="password" class="pretty green" required="required"></form>', 
+    htmlPiece(havingChild(
+        tagMatchingOutline('<input name="password" class="green" required>')
+    )));
+```
