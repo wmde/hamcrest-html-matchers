@@ -70,6 +70,40 @@ class ComplexTagMatcher extends TagMatcher
 
     private function createMatcherFromHtml($html)
     {
+        $document = $this->parseHtml($html);
+        $targetTag = $this->getSingleTagFromThe($document);
+
+        $this->assertTagDoesNotContainChildren($targetTag);
+
+        $attributeMatchers = $this->createAttributeMatchers($html, $targetTag);
+        $classMatchers = $this->createClassMatchers($targetTag);
+
+        return AllOf::allOf(
+            new TagNameMatcher(IsEqual::equalTo($targetTag->tagName)),
+            call_user_func_array([AllOf::class, 'allOf'], $attributeMatchers),
+            call_user_func_array([AllOf::class, 'allOf'], $classMatchers)
+        );
+    }
+
+    private function isUnknownTagError(\LibXMLError $error)
+    {
+        return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
+    }
+
+    private function isBooleanAttribute($inputHtml, $attributeName)
+    {
+        $quotedName = preg_quote($attributeName, '/');
+
+        $attributeHasValueAssigned = preg_match("/\b{$quotedName}\s*=/ui", $inputHtml);
+        return !$attributeHasValueAssigned;
+    }
+
+    /**
+     * @param $html
+     * @return \DOMDocument
+     */
+    private function parseHtml($html)
+    {
         $internalErrors = libxml_use_internal_errors(true);
         $document = new \DOMDocument();
 
@@ -93,6 +127,15 @@ class ComplexTagMatcher extends TagMatcher
             );
         }
 
+        return $document;
+    }
+
+    /**
+     * @param \DOMDocument $document
+     * @return \DOMElement
+     */
+    private function getSingleTagFromThe(\DOMDocument $document)
+    {
         $directChildren = iterator_to_array($document->documentElement->childNodes);
 
         $body = array_shift($directChildren);
@@ -102,42 +145,54 @@ class ComplexTagMatcher extends TagMatcher
             throw new InvalidArgumentException('Expected exacly 1 tag description, got ' . count($directChildren));
         }
 
-        /** @var \DOMElement $targetTag */
-        $targetTag = $directChildren[0];
+        return $directChildren[0];
+    }
 
+    private function assertTagDoesNotContainChildren(\DOMElement $targetTag)
+    {
         if ($targetTag->childNodes->length > 0) {
             throw new InvalidArgumentException('Nested elements are not allowed');
         }
+    }
 
-        $matcher = new TagNameMatcher(IsEqual::equalTo($targetTag->tagName));
-
+    /**
+     * @param string $inputHtml
+     * @param $targetTag
+     * @return AttributeMatcher[]
+     */
+    private function createAttributeMatchers($inputHtml, \DOMElement $targetTag)
+    {
         $attributeMatchers = [];
         /** @var \DOMAttr $attribute */
         foreach ($targetTag->attributes as $attribute) {
+            if ($attribute->name === 'class') {
+                continue;
+            }
+
             $attributeMatcher = new AttributeMatcher(IsEqual::equalTo($attribute->name));
-            if (!$this->isBooleanAttribute($html, $attribute->name)) {
+            if (!$this->isBooleanAttribute($inputHtml, $attribute->name)) {
                 $attributeMatcher = $attributeMatcher->havingValue(IsEqual::equalTo($attribute->value));
             }
 
             $attributeMatchers[] = $attributeMatcher;
         }
-
-        return AllOf::allOf(
-            new TagNameMatcher(IsEqual::equalTo($targetTag->tagName)),
-            call_user_func_array([AllOf::class, 'allOf'], $attributeMatchers)
-        );
+        return $attributeMatchers;
     }
 
-    private function isUnknownTagError(\LibXMLError $error)
+    /**
+     * @param \DOMElement $targetTag
+     * @return ClassMatcher[]
+     */
+    private function createClassMatchers($targetTag)
     {
-        return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
-    }
-
-    private function isBooleanAttribute($inputHtml, $attributeName)
-    {
-        $quotedName = preg_quote($attributeName, '/');
-
-        $attributeHasValueAssigned = preg_match("/\b{$quotedName}\s*=/ui", $inputHtml);
-        return !$attributeHasValueAssigned;
+        $classMatchers = [];
+        $classValue = $targetTag->getAttribute('class');
+        foreach (explode(' ', $classValue) as $expectedClass) {
+            if ($expectedClass === '') {
+                continue;
+            }
+            $classMatchers[] = new ClassMatcher(IsEqual::equalTo($expectedClass));
+        }
+        return $classMatchers;
     }
 }

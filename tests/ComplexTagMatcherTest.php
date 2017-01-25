@@ -109,4 +109,35 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         assertThat($html, is(htmlPiece(havingChild(
             ComplexTagMatcher::tagMatching('<input attr1=""/>')))));
     }
+
+    /**
+     * @test
+     */
+    public function assertPasses_WhenGivenTagHasExpectedClass() {
+        $html = '<input class="class1 class2">';
+
+        assertThat($html, is(htmlPiece(havingChild(
+            ComplexTagMatcher::tagMatching('<input class="class2"/>')))));
+    }
+
+    /**
+     * @test
+     */
+    public function assertFails_WhenGivenTagDoesNotHaveExpectedClass() {
+        $html = '<input class="class1 class2">';
+
+        $this->expectException(AssertionError::class);
+        assertThat($html, is(htmlPiece(havingChild(
+            ComplexTagMatcher::tagMatching('<input class="class3"/>')))));
+    }
+
+    /**
+     * @test
+     */
+    public function toleratesExtraSpacesInClassDescription() {
+        $html = '<input class="class1">';
+
+        assertThat($html, is(htmlPiece(havingChild(
+            ComplexTagMatcher::tagMatching('<input class="   class1   "/>')))));
+    }
 }
