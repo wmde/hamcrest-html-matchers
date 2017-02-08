@@ -42,7 +42,7 @@ class ClassMatcher extends TagMatcher
         /** @var \DOMElement $item */
         $classAttribute = $item->getAttribute('class');
 
-        $classes = explode(' ', $classAttribute);
+        $classes = preg_split('/\s+/u', $classAttribute);
         foreach ($classes as $class) {
             if ($this->classMatcher->matches($class)) {
                 return true;

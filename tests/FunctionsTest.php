@@ -91,6 +91,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p class="class1 class2 class3"></p>',
                 havingChild(withClass('class2'))
             ],
+            'withClass - casses separated with tab' => [
+                "<p class='class1\tclass2\tclass3'></p>",
+                havingChild(withClass('class2'))
+            ],
             'havingTextContents' => [
                 '<p>this is some text</p>',
                 havingChild(havingTextContents(containsString('some text')))
