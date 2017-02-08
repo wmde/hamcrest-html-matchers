@@ -7,11 +7,13 @@ php:
   - 7.1
   - hhvm
 
+env:
+  - LOWEST_VERSIONS=""
+  - LOWEST_VERSIONS=--prefer-lowest
+
 sudo: false
 
-install:
-  - travis_retry composer update
-  - travis_retry composer update --prefer-lowest
+install: travis_retry composer update $LOWEST_VERSIONS
 
 script: composer ci
 
