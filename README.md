@@ -1,6 +1,6 @@
 This is the set of Hamcrest matchers for HTML assertrions 
 =========================================================
-
+[![Build Status](https://travis-ci.org/wmde/hamcrest-html-matchers.svg?branch=master)](https://travis-ci.org/wmde/hamcrest-html-matchers)
 Usage examples
 --------------
 Hamcrest allows you to create pretty complicated and flexible assertions. Just remember:
