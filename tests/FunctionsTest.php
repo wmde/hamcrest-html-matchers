@@ -15,7 +15,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //TODO Does it make sence?
         $html = '<p></p><p></p>';
 
-        $this->expectException(AssertionError::class);
+        $this->setExpectedException(AssertionError::class);
         assertThat($html, is(htmlPiece(havingRootElement())));
     }
 
