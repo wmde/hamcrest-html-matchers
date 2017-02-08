@@ -110,6 +110,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 null,
                 allOf(containsString('html piece'), containsString('there was parsing error'))
             ],
+            'htmlPiece - prints passed html on failure' => [
+                '<p><a></a></p>',
+                havingRootElement(withTagName('b')),
+                containsString('<p><a></a></p>')
+            ],
             'withTagName - simple case' => [
                 '<p><b></b></p>',
                 havingRootElement(withTagName('b')),

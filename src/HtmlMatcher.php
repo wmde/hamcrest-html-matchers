@@ -88,8 +88,9 @@ class HtmlMatcher extends DiagnosingMatcher
         if ($this->elementMatcher) {
             $result = $this->elementMatcher->matches($document);
             $this->elementMatcher->describeMismatch($document, $mismatchDescription);
-            return $result;
         }
+
+        $mismatchDescription->appendText("\nActual html:\n")->appendText($html);
 
         return $result;
     }
