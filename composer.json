@@ -1,5 +1,6 @@
 {
     "name": "wmde/hamcrest-html-matchers",
+    "license": "LGPL-2.1",
     "type": "library",
     "description": "Set of Hamcrest matchers for HTML assertrions ",
     "authors": [
