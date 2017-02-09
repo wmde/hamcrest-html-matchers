@@ -202,7 +202,7 @@ class ComplexTagMatcher extends TagMatcher
     {
         $newDocument = new \DOMDocument();
         $cloned = $element->cloneNode(true);
-        $newDocument->appendChild($newDocument->importNode($cloned,true));
+        $newDocument->appendChild($newDocument->importNode($cloned, true));
         return trim($newDocument->saveHTML());
     }
 }
