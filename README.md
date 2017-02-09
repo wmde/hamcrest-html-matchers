@@ -72,6 +72,12 @@ Available Matchers
     assertThat('<p><input data-value="some data"></p>', htmlPiece(havingChild(
         withAttribute(startsWith('data-'))->havingValue('some data'))));
     ```
+    
+* `withClass` - checks given constraint against element's class list
+  ```php
+  assertThat('<p class="class1 class2 class3"></p>', htmlPiece(havingChild(
+        withClass('class2'))));
+  ```
 
 * `havingTextContents` - checks given constraint against elements text contents
     ```php
