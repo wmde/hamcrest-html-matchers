@@ -39,45 +39,45 @@ Information about general Hamcrest usage can be found at [Hamcrest github reposi
 Available Matchers
 ------------------
 * `htmlPiece()` - checks that string is a valid HTML, parses it and passes control to given matcher if one present
-```php
-assertThat('<p></p>', is(htmlPiece())); // Just checking that string is a valid piece of HTML
-```
+    ```php
+    assertThat('<p></p>', is(htmlPiece())); // Just checking that string is a valid piece of HTML
+    ```
 * `havingRootElement` - checks given constraint against root element of HTML. *NOTE: Can be passed only to `htmlPiece()`*
-```php
-assertThat('<p></p>', htmlPiece(havingRootElement(withTagName('p'))));
-```
+    ```php
+    assertThat('<p></p>', htmlPiece(havingRootElement(withTagName('p'))));
+    ```
 
 * `havingDirectChild` - checks given constraint against direct children 
-```php
-assertThat('<p><b></b></p>', htmlPiece(havingRootElement(havingDirectChild(withTagName('b')))));
-```
+    ```php
+    assertThat('<p><b></b></p>', htmlPiece(havingRootElement(havingDirectChild(withTagName('b')))));
+    ```
 
 * `havingChild` - checks given constraint against all children 
-```php
-assertThat('<p><b></b></p>', htmlPiece(havingChild(withTagName('b'))));
-```
+    ```php
+    assertThat('<p><b></b></p>', htmlPiece(havingChild(withTagName('b'))));
+    ```
 
 * `withTagName` - checks given constraint against tag name
-```php
-assertThat('<p><b></b></p>', htmlPiece(havingChild(withTagName(
-    either(equalTo('i'))->orElse(equalTo('b'))
-))));
-```
+    ```php
+    assertThat('<p><b></b></p>', htmlPiece(havingChild(withTagName(
+        either(equalTo('i'))->orElse(equalTo('b'))
+    ))));
+    ```
 
 * `withAttribute` - checks given constraint against elements attributes comparing names and values
-```php
-assertThat('<p><input required></p>', htmlPiece(havingChild(withAttribute('required'))));
-```
-```php
-assertThat('<p><input data-value="some data"></p>', htmlPiece(havingChild(
-    withAttribute(startsWith('data-'))->havingValue('some data'))));
-```
+    ```php
+    assertThat('<p><input required></p>', htmlPiece(havingChild(withAttribute('required'))));
+    ```
+    ```php
+    assertThat('<p><input data-value="some data"></p>', htmlPiece(havingChild(
+        withAttribute(startsWith('data-'))->havingValue('some data'))));
+    ```
 
 * `havingTextContents` - checks given constraint against elements text contents
-```php
-assertThat('<div><p>this is Some Text</p></div>', htmlPiece(havingChild(
-    havingTextContents(containsString('some text')->ignoringCase()))));
-```
+    ```php
+    assertThat('<div><p>this is Some Text</p></div>', htmlPiece(havingChild(
+        havingTextContents(containsString('some text')->ignoringCase()))));
+    ```
 
 * `tagMatchingOutline` - tolerantly checks that tag matches given *outline* (*outline* - tag representation in HTML format)\
 
