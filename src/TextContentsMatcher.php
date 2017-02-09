@@ -3,6 +3,7 @@
 namespace WMDE\HamcrestHtml;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
+use Hamcrest\Util;
 
 class TextContentsMatcher extends TagMatcher
 {
@@ -10,6 +11,10 @@ class TextContentsMatcher extends TagMatcher
      * @var Matcher
      */
     private $matcher;
+
+    public static function havingTextContents($text) {
+        return new static(Util::wrapValueWithIsEqual($text));
+    }
 
     public function __construct(Matcher $matcher)
     {

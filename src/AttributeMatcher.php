@@ -18,6 +18,10 @@ class AttributeMatcher extends TagMatcher
      */
     private $valueMatcher;
 
+    public static function withAttribute($attributeName) {
+        return new static(Util::wrapValueWithIsEqual($attributeName));
+    }
+
     /**
      * AttributeMatcher constructor.
      * @param \Hamcrest\Matcher $attributeNameMatcher

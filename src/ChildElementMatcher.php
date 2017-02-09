@@ -13,7 +13,11 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
      */
     private $matcher;
 
-    public function __construct($matcher = null)
+    public static function havingChild(Matcher $elementMatcher = null) {
+        return new static($elementMatcher);
+    }
+
+    public function __construct(Matcher $matcher = null)
     {
         parent::__construct(\DOMNode::class);
         $this->matcher = $matcher;

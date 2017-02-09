@@ -4,6 +4,7 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
 use Hamcrest\Matcher;
+use Hamcrest\Util;
 
 class ClassMatcher extends TagMatcher
 {
@@ -11,6 +12,10 @@ class ClassMatcher extends TagMatcher
      * @var Matcher
      */
     private $classMatcher;
+
+    public static function withClass($class) {
+        return new static(Util::wrapValueWithIsEqual($class));
+    }
 
     public function __construct(Matcher $class)
     {

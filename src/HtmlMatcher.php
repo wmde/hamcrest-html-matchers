@@ -19,11 +19,6 @@ class HtmlMatcher extends DiagnosingMatcher
      */
     private $elementMatcher;
 
-    public function __construct(Matcher $elementMatcher = null)
-    {
-        $this->elementMatcher = $elementMatcher;
-    }
-
     /**
      * @param Matcher $elementMatcher
      *
@@ -32,6 +27,11 @@ class HtmlMatcher extends DiagnosingMatcher
     public static function htmlPiece(Matcher $elementMatcher = null)
     {
         return new static($elementMatcher);
+    }
+
+    private function __construct(Matcher $elementMatcher = null)
+    {
+        $this->elementMatcher = $elementMatcher;
     }
 
     public function describeTo(Description $description)

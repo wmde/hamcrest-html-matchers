@@ -1,6 +1,5 @@
 <?php
 use Hamcrest\Matcher;
-use Hamcrest\Util;
 
 if (!function_exists('htmlPiece')) {
     /**
@@ -8,26 +7,26 @@ if (!function_exists('htmlPiece')) {
      *
      * @return \WMDE\HamcrestHtml\HtmlMatcher
      */
-    function htmlPiece($elementMatcher = null) {
+    function htmlPiece(Matcher $elementMatcher = null) {
         return \WMDE\HamcrestHtml\HtmlMatcher::htmlPiece($elementMatcher);
     }
 }
 
 if (!function_exists('havingRootElement')) {
-    function havingRootElement(\WMDE\HamcrestHtml\TagMatcher $matcher = null) {
-        return new \WMDE\HamcrestHtml\RootElementMatcher($matcher);
+    function havingRootElement(Matcher $matcher = null) {
+        return \WMDE\HamcrestHtml\RootElementMatcher::havingRootElement($matcher);
     }
 }
 
 if (!function_exists('havingDirectChild')) {
-    function havingDirectChild($elementMatcher = null) {
-        return new \WMDE\HamcrestHtml\DirectChildElementMatcher($elementMatcher);
+    function havingDirectChild(Matcher $elementMatcher = null) {
+        return \WMDE\HamcrestHtml\DirectChildElementMatcher::havingDirectChild($elementMatcher);
     }
 }
 
 if (!function_exists('havingChild')) {
-    function havingChild($elementMatcher = null) {
-        return new \WMDE\HamcrestHtml\ChildElementMatcher($elementMatcher);
+    function havingChild(Matcher $elementMatcher = null) {
+        return \WMDE\HamcrestHtml\ChildElementMatcher::havingChild($elementMatcher);
     }
 }
 
@@ -38,7 +37,7 @@ if (!function_exists('withTagName')) {
      * @return \WMDE\HamcrestHtml\TagNameMatcher
      */
     function withTagName($tagName) {
-        return new \WMDE\HamcrestHtml\TagNameMatcher(Util::wrapValueWithIsEqual($tagName));
+        return \WMDE\HamcrestHtml\TagNameMatcher::withTagName($tagName);
     }
 }
 
@@ -49,13 +48,11 @@ if (!function_exists('withAttribute')) {
      * @return \WMDE\HamcrestHtml\AttributeMatcher
      */
     function withAttribute($attributeName) {
-        return new \WMDE\HamcrestHtml\AttributeMatcher(
-            Util::wrapValueWithIsEqual($attributeName)
-        );
+        return \WMDE\HamcrestHtml\AttributeMatcher::withAttribute($attributeName);
     }
 }
 
-if (!function_exists('')) {
+if (!function_exists('withClass')) {
     /**
      * @param Matcher|string $class
      *
@@ -64,7 +61,7 @@ if (!function_exists('')) {
     function withClass($class) {
         //TODO don't allow to call with empty string
 
-        return new \WMDE\HamcrestHtml\ClassMatcher(Util::wrapValueWithIsEqual($class));
+        return \WMDE\HamcrestHtml\ClassMatcher::withClass($class);
     }
 }
 
@@ -75,7 +72,7 @@ if (!function_exists('havingTextContents')) {
      * @return \WMDE\HamcrestHtml\TextContentsMatcher
      */
     function havingTextContents($text) {
-        return new \WMDE\HamcrestHtml\TextContentsMatcher(Util::wrapValueWithIsEqual($text));
+        return \WMDE\HamcrestHtml\TextContentsMatcher::havingTextContents($text);
     }
 }
 

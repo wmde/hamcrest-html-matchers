@@ -3,19 +3,26 @@
 namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
+use Hamcrest\Matcher;
 use Hamcrest\TypeSafeDiagnosingMatcher;
 
 class RootElementMatcher extends TypeSafeDiagnosingMatcher
 {
     /**
-     * @var TagMatcher
+     * @var Matcher
      */
     private $tagMatcher;
 
     /**
-     * TagMatcher constructor.
+     * @param Matcher|null $tagMatcher
+     *
+     * @return static
      */
-    public function __construct(TagMatcher $tagMatcher = null)
+    public static function havingRootElement(Matcher $tagMatcher = null) {
+        return new static($tagMatcher);
+    }
+
+    public function __construct(Matcher $tagMatcher = null)
     {
         parent::__construct(self::TYPE_OBJECT, \DOMDocument::class);
         $this->tagMatcher = $tagMatcher;
