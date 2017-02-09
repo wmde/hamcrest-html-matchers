@@ -184,6 +184,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 both(containsString('having child having text contents "this is another text"'))
                     ->andAlso(containsString('no children having text contents "this is another text"'))
             ],
+            'havingTextContents - does not respect text in comments;' => [
+                '<div><!--commented text--></div>',
+                havingChild(havingTextContents('commented text')),
+                anything()
+            ],
             'tagMatchingOutline' => [
                 '<input id="ip-password" class="pretty">',
                 havingRootElement(tagMatchingOutline('<input name="password" class="important">')),
