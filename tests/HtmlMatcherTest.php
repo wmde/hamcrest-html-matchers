@@ -4,11 +4,8 @@ namespace WMDE\HamcrestHtml\Test;
 
 use WMDE\HamcrestHtml\HtmlMatcher;
 
-
 /**
  * @covers WMDE\HamcrestHtml\HtmlMatcher
- *
- * @license GPL-2.0+
  */
 class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
 {

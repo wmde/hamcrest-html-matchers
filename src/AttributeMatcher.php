@@ -6,9 +6,6 @@ use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
 
-/**
- * @license GPL-2.0+
- */
 class AttributeMatcher extends TagMatcher
 {
     /**

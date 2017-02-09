@@ -8,9 +8,6 @@ use InvalidArgumentException;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 
-/**
- * @license GPL-2.0+
- */
 class ComplexTagMatcher extends TagMatcher
 {
     /**

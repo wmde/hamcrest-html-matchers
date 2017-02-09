@@ -1,12 +1,10 @@
 <?php
 
 namespace WMDE\HamcrestHtml;
+
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 
-/**
- * @license GPL-2.0+
- */
 class ClassMatcher extends TagMatcher
 {
     /**

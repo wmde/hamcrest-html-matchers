@@ -2,15 +2,11 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
-
 use Hamcrest\AssertionError;
 use WMDE\HamcrestHtml\ComplexTagMatcher;
 
-
 /**
  * @covers WMDE\HamcrestHtml\ComplexTagMatcher
- *
- * @license GPL-2.0+
  */
 class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 {
