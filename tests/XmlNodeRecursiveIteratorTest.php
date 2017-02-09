@@ -1,8 +1,12 @@
 <?php
 
-namespace WMDE\HamcrestHtml;
+namespace WMDE\HamcrestHtml\Test;
 
+use WMDE\HamcrestHtml\XmlNodeRecursiveIterator;
 
+/**
+ * @covers WMDE\HamcrestHtml\XmlNodeRecursiveIterator
+ */
 class XmlNodeRecursiveIteratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testIteratesAllElements_WhenFlatStructureGiven()
