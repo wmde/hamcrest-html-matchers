@@ -15,35 +15,25 @@ class HtmlMatcher extends DiagnosingMatcher
     const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
     /**
-     * @var RootElementMatcher
+     * @var Matcher
      */
     private $elementMatcher;
 
-    /**
-     * HtmlMatcher constructor.
-     */
-    public function __construct($elementMatcher = null)
+    public function __construct(Matcher $elementMatcher = null)
     {
         $this->elementMatcher = $elementMatcher;
     }
 
     /**
-     * @param string $html
+     * @param Matcher $elementMatcher
+     *
      * @return HtmlMatcher
      */
-    public static function htmlPiece($elementMatcher= null)
+    public static function htmlPiece(Matcher $elementMatcher = null)
     {
         return new static($elementMatcher);
     }
 
-    /**
-     * Generates a description of the object.  The description may be part
-     * of a description of a larger object of which this is just a component,
-     * so it should be worded appropriately.
-     *
-     * @param \Hamcrest\Description $description
-     *   The description to be built or appended to.
-     */
     public function describeTo(Description $description)
     {
         $description->appendText('valid html piece ');

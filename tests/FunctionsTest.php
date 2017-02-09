@@ -12,7 +12,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function havingRootElement_MultipleRootTags_ThrowsException()
     {
-        //TODO Does it make sence?
+        //TODO Does it make sense?
         $html = '<p></p><p></p>';
 
         $this->setExpectedException(AssertionError::class);
@@ -32,20 +32,19 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      * @dataProvider dataProvider_ElementDoesNotExist
      */
     public function matcherCantFindElement($html, $matcher, Matcher $messageMatcher) {
+        $thrownException = null;
         try {
             assertThat($html, is(htmlPiece($matcher)));
-        } catch (AssertionError $e) {
-            assertThat($e->getMessage(), $messageMatcher);
-            return;
+        } catch (\Exception $e) {
+            $thrownException = $e;
         }
 
-        $this->fail("Didn't catch expected exception");
+        assertThat($thrownException, is(anInstanceOf(AssertionError::class)));
+        assertThat($thrownException->getMessage(), $messageMatcher);
     }
 
     public function dataProvider_ElementExists()
     {
-        //TODO Add tagMatching('<input name="asd" class="qwerty error ehehey"/>')
-
         return [
             'htmlPiece - simple case' => [
                 '<p></p>',
@@ -91,7 +90,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p class="class1 class2 class3"></p>',
                 havingChild(withClass('class2'))
             ],
-            'withClass - casses separated with tab' => [
+            'withClass - classes separated with tab' => [
                 "<p class='class1\tclass2\tclass3'></p>",
                 havingChild(withClass('class2'))
             ],

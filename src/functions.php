@@ -4,6 +4,8 @@ use Hamcrest\Util;
 
 if (!function_exists('htmlPiece')) {
     /**
+     * @param mixed $elementMatcher
+     *
      * @return \WMDE\HamcrestHtml\HtmlMatcher
      */
     function htmlPiece($elementMatcher = null) {

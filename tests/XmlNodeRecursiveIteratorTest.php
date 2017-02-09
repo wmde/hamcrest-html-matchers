@@ -31,11 +31,9 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit_Framework_TestCase
         $DOMDocument = new \DOMDocument();
 
         if (!@$DOMDocument->loadHTML($html)) {
-            return false;
+            throw new \RuntimeException('Filed to parse HTML');
         }
 
-
-        $errors = libxml_get_errors();
         libxml_clear_errors();
         libxml_use_internal_errors($internalErrors);
         $DOMNodeList = iterator_to_array($DOMDocument->documentElement->childNodes);

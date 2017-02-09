@@ -19,15 +19,6 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
         $this->matcher = $matcher;
     }
 
-
-    /**
-     * Generates a description of the object.  The description may be part
-     * of a description of a larger object of which this is just a component,
-     * so it should be worded appropriately.
-     *
-     * @param \Hamcrest\Description $description
-     *   The description to be built or appended to.
-     */
     public function describeTo(Description $description)
     {
         $description->appendText('having child ');
@@ -37,8 +28,10 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
     }
 
     /**
-     * Subclasses should implement these. The item will already have been checked for
-     * the specific type.
+     * @param \DOMDocument|\DOMNode $item
+     * @param Description $mismatchDescription
+     *
+     * @return bool
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {

@@ -46,14 +46,6 @@ class ComplexTagMatcher extends TagMatcher
         $this->matcher = $this->createMatcherFromHtml($tagHtmlRepresentation);
     }
 
-    /**
-     * Generates a description of the object.  The description may be part
-     * of a description of a larger object of which this is just a component,
-     * so it should be worded appropriately.
-     *
-     * @param \Hamcrest\Description $description
-     *   The description to be built or appended to.
-     */
     public function describeTo(Description $description)
     {
         $description->appendText('tag matching outline `')
@@ -62,8 +54,10 @@ class ComplexTagMatcher extends TagMatcher
     }
 
     /**
-     * Subclasses should implement these. The item will already have been checked for
-     * the specific type.
+     * @param \DOMElement $item
+     * @param Description $mismatchDescription
+     *
+     * @return bool
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
@@ -108,7 +102,9 @@ class ComplexTagMatcher extends TagMatcher
 
     /**
      * @param $html
+     *
      * @return \DOMDocument
+     * @throws \InvalidArgumentException
      */
     private function parseHtml($html)
     {
@@ -123,7 +119,6 @@ class ComplexTagMatcher extends TagMatcher
         libxml_clear_errors();
         libxml_use_internal_errors($internalErrors);
 
-        $result = true;
         /** @var \LibXMLError $error */
         foreach ($errors as $error) {
             if ($this->isUnknownTagError($error)) {
@@ -140,7 +135,9 @@ class ComplexTagMatcher extends TagMatcher
 
     /**
      * @param \DOMDocument $document
+     *
      * @return \DOMElement
+     * @throws \InvalidArgumentException
      */
     private function getSingleTagFromThe(\DOMDocument $document)
     {
@@ -150,7 +147,7 @@ class ComplexTagMatcher extends TagMatcher
         $directChildren = iterator_to_array($body->childNodes);
 
         if (count($directChildren) !== 1) {
-            throw new InvalidArgumentException('Expected exacly 1 tag description, got ' . count($directChildren));
+            throw new InvalidArgumentException('Expected exactly 1 tag description, got ' . count($directChildren));
         }
 
         return $directChildren[0];
@@ -206,9 +203,9 @@ class ComplexTagMatcher extends TagMatcher
 
     private function elementToString(\DOMElement $element)
     {
-        $newdoc = new \DOMDocument();
+        $newDocument = new \DOMDocument();
         $cloned = $element->cloneNode(true);
-        $newdoc->appendChild($newdoc->importNode($cloned,true));
-        return trim($newdoc->saveHTML());
+        $newDocument->appendChild($newDocument->importNode($cloned,true));
+        return trim($newDocument->saveHTML());
     }
 }

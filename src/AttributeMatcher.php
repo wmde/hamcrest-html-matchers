@@ -45,14 +45,6 @@ class AttributeMatcher extends TagMatcher
         return $result;
     }
 
-    /**
-     * Generates a description of the object.  The description may be part
-     * of a description of a larger object of which this is just a component,
-     * so it should be worded appropriately.
-     *
-     * @param \Hamcrest\Description $description
-     *   The description to be built or appended to.
-     */
     public function describeTo(Description $description)
     {
         $description->appendText('with attribute ')
@@ -64,12 +56,13 @@ class AttributeMatcher extends TagMatcher
     }
 
     /**
-     * Subclasses should implement these. The item will already have been checked for
-     * the specific type.
+     * @param \DOMElement $item
+     * @param Description $mismatchDescription
+     *
+     * @return bool
      */
     protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
     {
-        /** @var \DOMElement $item */
         /** @var \DOMAttr $attribute */
         foreach ($item->attributes as $attribute) {
             if ($this->valueMatcher) {

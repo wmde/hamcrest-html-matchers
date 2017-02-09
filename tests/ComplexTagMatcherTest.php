@@ -60,7 +60,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function assertFailes_WhenTagInHtmlDoesNotHaveExpectedAttribute() {
+    public function assertFails_WhenTagInHtmlDoesNotHaveExpectedAttribute() {
         $html = '<p></p>';
 
         $this->setExpectedException(AssertionError::class);
@@ -81,7 +81,7 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function assertFailes_WhenTagInHtmlDoesNotHaveAllExpectedAttribute() {
+    public function assertFails_WhenTagInHtmlDoesNotHaveAllExpectedAttribute() {
         $html = '<p id="some-id"></p>';
 
         $this->setExpectedException(AssertionError::class);
