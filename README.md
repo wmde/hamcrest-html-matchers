@@ -1,6 +1,9 @@
 This is the set of Hamcrest matchers for HTML assertrions 
 =========================================================
 [![Build Status](https://travis-ci.org/wmde/hamcrest-html-matchers.svg?branch=master)](https://travis-ci.org/wmde/hamcrest-html-matchers)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/?branch=master)
+
 Usage examples
 --------------
 Hamcrest allows you to create pretty complicated and flexible assertions. Just remember:
