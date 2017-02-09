@@ -98,6 +98,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 '<p>this is some text</p>',
                 havingChild(havingTextContents(containsString('some text')))
             ],
+            'havingTextContents - unicode text' => [
+                '<p>какой-то текст</p>',
+                havingChild(havingTextContents(containsString('какой-то текст')))
+            ],
             'tagMatchingOutline' => [
                 '<form><input id="ip-password" class="pretty important" name="password"></form>',
                 havingChild(tagMatchingOutline('<input name="password" class="important">'))

@@ -47,7 +47,7 @@ class HtmlMatcher extends DiagnosingMatcher
         $internalErrors = libxml_use_internal_errors(true);
         $document = new \DOMDocument();
 
-        if (!@$document->loadHTML($html)) {
+        if (!@$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'))) {
             $mismatchDescription->appendText('there was some parsing error');
             return false;
         }
