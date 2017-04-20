@@ -100,6 +100,15 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase {
 				'<p>какой-то текст</p>',
 				havingChild( havingTextContents( containsString( 'какой-то текст' ) ) )
 			],
+			'havingTextContents - ignoring the whitespace' => [
+				'<p>
+                    this is
+                    <i>some
+                        <b>text</b>
+                    </i>
+                </p>',
+				havingChild(havingTextContents(containsStringIgnoringWhiteSpace('some text')))
+			],
 			'tagMatchingOutline' => [
 				'<form><input id="ip-password" class="pretty important" name="password"></form>',
 				havingChild( tagMatchingOutline( '<input name="password" class="important">' ) )

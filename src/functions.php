@@ -87,3 +87,14 @@ if ( !function_exists( 'tagMatchingOutline' ) ) {
 		return \WMDE\HamcrestHtml\ComplexTagMatcher::tagMatchingOutline( $htmlOutline );
 	}
 }
+
+if (!function_exists('containsStringIgnoringWhiteSpace')) {
+    /**
+     * @param $substring
+     *
+     * @return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace
+     */
+    function containsStringIgnoringWhiteSpace($substring) {
+        return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace::containsStringIgnoringWhiteSpace($substring);
+    }
+}
