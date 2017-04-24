@@ -16,7 +16,23 @@ class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit_Framework_TestCase
 	 * @test
 	 */
 	public function containsStringIgnoringWhiteSpaceHandlesTextWithoutSubstring() {
-		assertThat(not('this is some other text', containsStringIgnoringWhiteSpace('some text')));
+		assertThat('this is some other text', not(containsStringIgnoringWhiteSpace('some text')));
+	}
+
+	/**
+	 * @test
+	 */
+	public function containsStringIgnoringWhiteSpaceProducesReadableOutputOnError() {
+		try {
+			assertThat(' text actual ', containsStringIgnoringWhiteSpace(' text expected '));
+			$this->fail('AssertionError is expected to be thrown');
+		} catch (\Hamcrest\AssertionError $e) {
+			assertThat(
+				$e->getMessage(),
+				both(containsString('Expected: a string containing ignoring whitespace " text expected "'))
+					->andAlso(containsString('but: was " text actual "'))
+			);
+		}
 	}
 
 	public function dataProvider_containsStringIgnoringWhiteSpace() {
@@ -46,6 +62,10 @@ class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit_Framework_TestCase
 			'containsStringIgnoringWhiteSpace - multiple spaces are ignored in the pattern' => [
 				'this is some text',
 				'some  text'
+			],
+			'containsStringIgnoringWhiteSpace - leading and trailing spaces are ignored in the pattern' => [
+				'this is some text',
+				' some text '
 			],
 		];
 	}

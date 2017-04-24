@@ -1,15 +1,11 @@
 <?php
 
 namespace WMDE\HamcrestHtml;
+
 use Hamcrest\Text\SubstringMatcher;
 
 class StringContainsIgnoringWhiteSpace extends SubstringMatcher
 {
-	public function __construct($substring)
-	{
-		parent::__construct($this->_stripSpace($substring));
-	}
-
 	/**
 	 * Matches if value is a string that contains $substring consider all whitespace as single space
 	 */
@@ -19,34 +15,27 @@ class StringContainsIgnoringWhiteSpace extends SubstringMatcher
 	}
 
 	/**
-	 * @param \DOMElement $item
+	 * @param string $item
 	 *
 	 * @return bool
 	 */
 	protected function evalSubstringOf($item)
 	{
-		return (false !== strpos($this->_stripSpace((string) $item), $this->_substring));
+		return (false !== strpos($this->stripSpace((string) $item), $this->stripSpace($this->_substring)));
 	}
 
 	protected function relationship()
 	{
-		return 'containing';
+		return 'containing ignoring whitespace';
 	}
 
 	/**
-	 * Copied from IsEqualIgnoringWhiteSpace
-	 *
 	 * @param $string
 	 *
 	 * @return string
 	 */
-	private function _stripSpace($string)
+	private function stripSpace( $string)
 	{
-		$parts = preg_split("/[\r\n\t ]+/", $string);
-		foreach ($parts as $i => $part) {
-			$parts[$i] = trim($part, " \r\n\t");
-		}
-
-		return trim(implode(' ', $parts), " \r\n\t");
+		return trim(preg_replace( "/\s+/", ' ', $string));
 	}
 }
