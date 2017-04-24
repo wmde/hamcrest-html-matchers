@@ -88,13 +88,15 @@ if ( !function_exists( 'tagMatchingOutline' ) ) {
 	}
 }
 
-if (!function_exists('containsStringIgnoringWhiteSpace')) {
-    /**
-     * @param $substring
-     *
-     * @return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace
-     */
-    function containsStringIgnoringWhiteSpace($substring) {
-        return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace::containsStringIgnoringWhiteSpace($substring);
-    }
+if ( !function_exists( 'containsStringIgnoringWhiteSpace' ) ) {
+	/**
+	 * @param string $substring
+	 *
+	 * @return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace
+	 */
+	function containsStringIgnoringWhiteSpace( $substring ) {
+		return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace::containsStringIgnoringWhiteSpace(
+			$substring
+		);
+	}
 }

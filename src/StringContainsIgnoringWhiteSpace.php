@@ -4,14 +4,17 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Text\SubstringMatcher;
 
-class StringContainsIgnoringWhiteSpace extends SubstringMatcher
-{
+class StringContainsIgnoringWhiteSpace extends SubstringMatcher {
+
 	/**
 	 * Matches if value is a string that contains $substring consider all whitespace as single space
+	 *
+	 * @param string $substring
+	 *
+	 * @return self
 	 */
-	public static function containsStringIgnoringWhiteSpace($substring)
-	{
-		return new self($substring);
+	public static function containsStringIgnoringWhiteSpace( $substring ) {
+		return new self( $substring );
 	}
 
 	/**
@@ -19,23 +22,21 @@ class StringContainsIgnoringWhiteSpace extends SubstringMatcher
 	 *
 	 * @return bool
 	 */
-	protected function evalSubstringOf($item)
-	{
-		return (false !== strpos($this->stripSpace((string) $item), $this->stripSpace($this->_substring)));
+	protected function evalSubstringOf( $item ) {
+		return strpos( $this->stripSpace( $item ), $this->stripSpace( $this->_substring ) ) !== false;
 	}
 
-	protected function relationship()
-	{
+	protected function relationship() {
 		return 'containing ignoring whitespace';
 	}
 
 	/**
-	 * @param $string
+	 * @param string $string
 	 *
 	 * @return string
 	 */
-	private function stripSpace( $string)
-	{
-		return trim(preg_replace( "/\s+/", ' ', $string));
+	private function stripSpace( $string ) {
+		return trim( preg_replace( '/\s+/', ' ', $string ) );
 	}
+
 }

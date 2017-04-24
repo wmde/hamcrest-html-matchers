@@ -2,21 +2,21 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
-class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit_Framework_TestCase
-{
+class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit\Framework\TestCase {
+
 	/**
 	 * @test
 	 * @dataProvider dataProvider_containsStringIgnoringWhiteSpace
 	 */
-	public function containsStringIgnoringWhiteSpaceIgnoresTheWhiteSpace($text, $substring) {
-		assertThat($text, containsStringIgnoringWhiteSpace($substring));
+	public function containsStringIgnoringWhiteSpaceIgnoresTheWhiteSpace( $text, $substring ) {
+		assertThat( $text, containsStringIgnoringWhiteSpace( $substring ) );
 	}
 
 	/**
 	 * @test
 	 */
 	public function containsStringIgnoringWhiteSpaceHandlesTextWithoutSubstring() {
-		assertThat('this is some other text', not(containsStringIgnoringWhiteSpace('some text')));
+		assertThat( 'this is some other text', not( containsStringIgnoringWhiteSpace( 'some text' ) ) );
 	}
 
 	/**
@@ -24,13 +24,13 @@ class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function containsStringIgnoringWhiteSpaceProducesReadableOutputOnError() {
 		try {
-			assertThat(' text actual ', containsStringIgnoringWhiteSpace(' text expected '));
-			$this->fail('AssertionError is expected to be thrown');
-		} catch (\Hamcrest\AssertionError $e) {
+			assertThat( ' text actual ', containsStringIgnoringWhiteSpace( ' text expected ' ) );
+			$this->fail( 'AssertionError is expected to be thrown' );
+		} catch ( \Hamcrest\AssertionError $e ) {
 			assertThat(
 				$e->getMessage(),
-				both(containsString('Expected: a string containing ignoring whitespace " text expected "'))
-					->andAlso(containsString('but: was " text actual "'))
+				both( containsString( 'Expected: a string containing ignoring whitespace " text expected "' ) )
+					->andAlso( containsString( 'but: was " text actual "' ) )
 			);
 		}
 	}
@@ -69,4 +69,5 @@ class StringContainsIgnoringWhiteSpaceTest extends \PHPUnit_Framework_TestCase
 			],
 		];
 	}
+
 }

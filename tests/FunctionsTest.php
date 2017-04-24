@@ -102,12 +102,12 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase {
 			],
 			'havingTextContents - ignoring the whitespace' => [
 				'<p>
-                    this is
-                    <i>some
-                        <b>text</b>
-                    </i>
-                </p>',
-				havingChild(havingTextContents(containsStringIgnoringWhiteSpace('some text')))
+					this is
+					<i>some
+						<b>text</b>
+					</i>
+				</p>',
+				havingChild( havingTextContents( containsStringIgnoringWhiteSpace( 'some text' ) ) )
 			],
 			'tagMatchingOutline' => [
 				'<form><input id="ip-password" class="pretty important" name="password"></form>',
