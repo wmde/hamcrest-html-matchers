@@ -58,4 +58,53 @@ class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function considersValidHtml_WHtmlContainsScriptTagWithHtmlContents()
+    {
+        $html = "<div>
+<script type='x-template'>
+	<span></span>
+</script>
+</div>";
+
+        assertThat($html, is(HtmlMatcher::htmlPiece()));
+    }
+
+    /**
+     * @test
+     */
+    public function addsSpecificTextInsideTheSciptTagsInsteadOfItsContents()
+    {
+        $html = "<div>
+<script type='x-template'>
+	<span></span>
+</script>
+</div>";
+
+        assertThat($html, is(htmlPiece(havingChild(
+            both(withTagName('script'))
+                ->andAlso(havingTextContents(HtmlMatcher::SCRIPT_BODY_REPLACEMENT))))));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotTouchScriptTagAttributes()
+    {
+        $html = "<div>
+<script type='x-template' attr1='value1'>
+	<span></span>
+</script>
+</div>";
+
+        assertThat($html, is(htmlPiece(havingChild(
+            allOf(
+                withTagName('script'),
+                withAttribute('type')->havingValue('x-template'),
+                withAttribute('attr1')->havingValue('value1')
+            )))));
+    }
+
 }
