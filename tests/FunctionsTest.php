@@ -7,6 +7,7 @@ use Hamcrest\Matcher;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @test
      */
@@ -197,4 +198,5 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
 }

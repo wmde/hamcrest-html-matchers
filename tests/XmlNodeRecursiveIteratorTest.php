@@ -9,6 +9,7 @@ use WMDE\HamcrestHtml\XmlNodeRecursiveIterator;
  */
 class XmlNodeRecursiveIteratorTest extends \PHPUnit_Framework_TestCase
 {
+
     public function testIteratesAllElements_WhenFlatStructureGiven()
     {
         $DOMNodeList = $this->createDomNodeListFromHtml('<p></p>');
@@ -58,4 +59,5 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit_Framework_TestCase
         }, $array);
         return $tagNames;
     }
+
 }

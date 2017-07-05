@@ -8,6 +8,7 @@ use Hamcrest\Util;
 
 class AttributeMatcher extends TagMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -82,4 +83,5 @@ class AttributeMatcher extends TagMatcher
 
         return false;
     }
+
 }

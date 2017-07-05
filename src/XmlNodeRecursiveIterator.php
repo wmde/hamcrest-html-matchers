@@ -2,9 +2,9 @@
 
 namespace WMDE\HamcrestHtml;
 
-
 class XmlNodeRecursiveIterator extends \ArrayIterator
 {
+
     public function __construct(\DOMNodeList $nodeList)
     {
         $queue = $this->addElementsToQueue([], $nodeList);
@@ -29,4 +29,5 @@ class XmlNodeRecursiveIterator extends \ArrayIterator
 
         return $queue;
     }
+
 }

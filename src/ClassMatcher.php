@@ -8,6 +8,7 @@ use Hamcrest\Util;
 
 class ClassMatcher extends TagMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -47,4 +48,5 @@ class ClassMatcher extends TagMatcher
 
         return false;
     }
+
 }

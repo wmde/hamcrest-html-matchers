@@ -8,6 +8,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 
 class ChildElementMatcher extends TypeSafeDiagnosingMatcher
 {
+
     /**
      * @var Matcher|null
      */
@@ -66,4 +67,5 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher
         $mismatchDescription->appendText('having no children ')->appendDescriptionOf($this->matcher);
         return false;
     }
+
 }

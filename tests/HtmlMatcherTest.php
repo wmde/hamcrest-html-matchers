@@ -9,6 +9,7 @@ use WMDE\HamcrestHtml\HtmlMatcher;
  */
 class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @test
      * @dataProvider dataProvider_HtmlTagNamesIntroducedInHtml5
