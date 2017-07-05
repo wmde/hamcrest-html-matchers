@@ -85,7 +85,7 @@ class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
 
         assertThat($html, is(htmlPiece(havingChild(
             both(withTagName('script'))
-                ->andAlso(havingTextContents(HtmlMatcher::SCRIPT_BODY_REPLACEMENT))))));
+                ->andAlso(havingTextContents("\n\t<span><\\/span>\n"))))));
     }
 
     /**

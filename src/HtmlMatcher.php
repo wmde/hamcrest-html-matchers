@@ -14,8 +14,6 @@ class HtmlMatcher extends DiagnosingMatcher
      */
     const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
-    const SCRIPT_BODY_REPLACEMENT = 'Contents were removed by HtmlMatcher';
-
     /**
      * @var Matcher
      */
@@ -49,7 +47,7 @@ class HtmlMatcher extends DiagnosingMatcher
         $internalErrors = libxml_use_internal_errors(true);
         $document = new \DOMDocument();
 
-        $html = $this->stripScriptsContents($html);
+        $html = $this->escapeScriptTagContents($html);
 
         if (!@$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'))) {
             $mismatchDescription->appendText('there was some parsing error');
@@ -96,16 +94,14 @@ class HtmlMatcher extends DiagnosingMatcher
 
     /**
      * @param string $html
-     * @return string
+     *
+     * @return string HTML
      */
-    private function stripScriptsContents($html)
+    private function escapeScriptTagContents($html)
     {
-        preg_match_all("#(<script.*>).*</script>#sU", $html, $scripts);
-        foreach ($scripts[0] as $index => $script) {
-            $openTag = $scripts[1][$index];
-            $replacement = $openTag . self::SCRIPT_BODY_REPLACEMENT . '</script>';
-            $html = str_replace($script, $replacement, $html);
-        }
-        return $html;
+        return preg_replace_callback('#(<script.*>)(.*)(</script>)#isU', function ($matches)
+        {
+            return $matches[1] . str_replace('</', '<\/', $matches[2]) . $matches[3];
+        }, $html);
     }
 }
