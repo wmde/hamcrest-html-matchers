@@ -8,11 +8,13 @@ use Hamcrest\Matcher;
 
 class HtmlMatcher extends DiagnosingMatcher
 {
-    /**
+	/**
      * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
      * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
      */
     const XML_UNKNOWN_TAG_ERROR_CODE = 801;
+
+    const SCRIPT_BODY_REPLACEMENT = 'Contents were removed by HtmlMatcher';
 
     /**
      * @var Matcher
@@ -46,6 +48,8 @@ class HtmlMatcher extends DiagnosingMatcher
     {
         $internalErrors = libxml_use_internal_errors(true);
         $document = new \DOMDocument();
+
+        $html = $this->stripScriptsContents($html);
 
         if (!@$document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'))) {
             $mismatchDescription->appendText('there was some parsing error');
@@ -88,5 +92,20 @@ class HtmlMatcher extends DiagnosingMatcher
     private function isUnknownTagError(\LibXMLError $error)
     {
         return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
+    }
+
+    /**
+     * @param string $html
+     * @return string
+     */
+    private function stripScriptsContents($html)
+    {
+        preg_match_all("#(<script.*>).*</script>#sU", $html, $scripts);
+        foreach ($scripts[0] as $index => $script) {
+            $openTag = $scripts[1][$index];
+            $replacement = $openTag . self::SCRIPT_BODY_REPLACEMENT . '</script>';
+            $html = str_replace($script, $replacement, $html);
+        }
+        return $html;
     }
 }
