@@ -78,14 +78,12 @@ class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
     public function addsSpecificTextInsideTheSciptTagsInsteadOfItsContents()
     {
         $html = "<div>
-<script type='x-template'>
-	<span></span>
-</script>
+<script type='x-template'><span></span></script>
 </div>";
 
         assertThat($html, is(htmlPiece(havingChild(
             both(withTagName('script'))
-                ->andAlso(havingTextContents("\n\t<span><\\/span>\n"))))));
+                ->andAlso(havingTextContents("<span><\\/span>"))))));
     }
 
     /**
