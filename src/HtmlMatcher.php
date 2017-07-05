@@ -99,8 +99,7 @@ class HtmlMatcher extends DiagnosingMatcher
      */
     private function escapeScriptTagContents($html)
     {
-        return preg_replace_callback('#(<script.*>)(.*)(</script>)#isU', function ($matches)
-        {
+        return preg_replace_callback('#(<script.*>)(.*)(</script>)#isU', function ($matches) {
             return $matches[1] . str_replace('</', '<\/', $matches[2]) . $matches[3];
         }, $html);
     }
