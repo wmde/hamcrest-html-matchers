@@ -10,6 +10,7 @@ use WMDE\HamcrestHtml\ComplexTagMatcher;
  */
 class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @test
      */
@@ -136,4 +137,5 @@ class ComplexTagMatcherTest extends \PHPUnit_Framework_TestCase
         assertThat($html, is(htmlPiece(havingChild(
             ComplexTagMatcher::tagMatchingOutline('<input class="   class1   "/>')))));
     }
+
 }

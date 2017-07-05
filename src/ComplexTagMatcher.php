@@ -10,6 +10,7 @@ use Hamcrest\Matcher;
 
 class ComplexTagMatcher extends TagMatcher
 {
+
     /**
      * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
      * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
@@ -205,4 +206,5 @@ class ComplexTagMatcher extends TagMatcher
         $newDocument->appendChild($newDocument->importNode($cloned, true));
         return trim($newDocument->saveHTML());
     }
+
 }

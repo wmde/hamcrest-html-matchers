@@ -1,4 +1,5 @@
 <?php
+
 use Hamcrest\Matcher;
 
 if (!function_exists('htmlPiece')) {

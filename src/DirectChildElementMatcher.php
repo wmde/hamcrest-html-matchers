@@ -2,13 +2,13 @@
 
 namespace WMDE\HamcrestHtml;
 
-
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\TypeSafeDiagnosingMatcher;
 
 class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -72,4 +72,5 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher
 
         return false;
     }
+
 }

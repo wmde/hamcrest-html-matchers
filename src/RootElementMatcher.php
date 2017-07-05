@@ -8,6 +8,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 
 class RootElementMatcher extends TypeSafeDiagnosingMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -68,4 +69,5 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher
 
         return (bool)$target;
     }
+
 }

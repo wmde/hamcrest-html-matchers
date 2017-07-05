@@ -1,12 +1,14 @@
 <?php
 
 namespace WMDE\HamcrestHtml;
+
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
 
 class TextContentsMatcher extends TagMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -37,4 +39,5 @@ class TextContentsMatcher extends TagMatcher
     {
         return $this->matcher->matches($item->textContent);
     }
+
 }

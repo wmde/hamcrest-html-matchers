@@ -8,6 +8,7 @@ use Hamcrest\Util;
 
 class TagNameMatcher extends TagMatcher
 {
+
     /**
      * @var Matcher
      */
@@ -41,4 +42,5 @@ class TagNameMatcher extends TagMatcher
         $this->tagNameMatcher->describeMismatch($item->tagName, $mismatchDescription);
         return $this->tagNameMatcher->matches($item->tagName);
     }
+
 }
