@@ -75,7 +75,7 @@ class HtmlMatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function addsSpecificTextInsideTheSciptTagsInsteadOfItsContents()
+    public function addsSpecificTextInsideTheScriptTagsInsteadOfItsContents()
     {
         $html = "<div>
 <script type='x-template'>
