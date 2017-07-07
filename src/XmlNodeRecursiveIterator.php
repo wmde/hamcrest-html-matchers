@@ -2,13 +2,11 @@
 
 namespace WMDE\HamcrestHtml;
 
-class XmlNodeRecursiveIterator extends \ArrayIterator
-{
+class XmlNodeRecursiveIterator extends \ArrayIterator {
 
-    public function __construct(\DOMNodeList $nodeList)
-    {
-        $queue = $this->addElementsToQueue([], $nodeList);
-        parent::__construct($queue);
+    public function __construct( \DOMNodeList $nodeList ) {
+        $queue = $this->addElementsToQueue( [], $nodeList );
+        parent::__construct( $queue );
     }
 
     /**
@@ -17,13 +15,12 @@ class XmlNodeRecursiveIterator extends \ArrayIterator
      *
      * @return array New queue
      */
-    private function addElementsToQueue(array $queue, \DOMNodeList $nodeList)
-    {
+    private function addElementsToQueue( array $queue, \DOMNodeList $nodeList ) {
         /** @var \DOMElement $node */
-        foreach ($nodeList as $node) {
+        foreach ( $nodeList as $node ) {
             $queue[] = $node;
-            if ($node->childNodes !== null) {
-                $queue = $this->addElementsToQueue($queue, $node->childNodes);
+            if ( $node->childNodes !== null ) {
+                $queue = $this->addElementsToQueue( $queue, $node->childNodes );
             }
         }
 
