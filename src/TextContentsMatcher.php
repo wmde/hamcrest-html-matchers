@@ -6,27 +6,24 @@ use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
 
-class TextContentsMatcher extends TagMatcher
-{
+class TextContentsMatcher extends TagMatcher {
 
     /**
      * @var Matcher
      */
     private $matcher;
 
-    public static function havingTextContents($text) {
-        return new static(Util::wrapValueWithIsEqual($text));
+    public static function havingTextContents( $text ) {
+        return new static( Util::wrapValueWithIsEqual( $text ) );
     }
 
-    public function __construct(Matcher $matcher)
-    {
+    public function __construct( Matcher $matcher ) {
         parent::__construct();
         $this->matcher = $matcher;
     }
 
-    public function describeTo(Description $description)
-    {
-        $description->appendText('having text contents ')->appendDescriptionOf($this->matcher);
+    public function describeTo( Description $description ) {
+        $description->appendText( 'having text contents ' )->appendDescriptionOf( $this->matcher );
     }
 
     /**
@@ -35,9 +32,8 @@ class TextContentsMatcher extends TagMatcher
      *
      * @return bool
      */
-    protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
-    {
-        return $this->matcher->matches($item->textContent);
+    protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+        return $this->matcher->matches( $item->textContent );
     }
 
 }

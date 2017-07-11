@@ -6,8 +6,7 @@ use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
 
-class AttributeMatcher extends TagMatcher
-{
+class AttributeMatcher extends TagMatcher {
 
     /**
      * @var Matcher
@@ -19,16 +18,15 @@ class AttributeMatcher extends TagMatcher
      */
     private $valueMatcher;
 
-    public static function withAttribute($attributeName) {
-        return new static(Util::wrapValueWithIsEqual($attributeName));
+    public static function withAttribute( $attributeName ) {
+        return new static( Util::wrapValueWithIsEqual( $attributeName ) );
     }
 
     /**
      * AttributeMatcher constructor.
      * @param \Hamcrest\Matcher $attributeNameMatcher
      */
-    public function __construct(Matcher $attributeNameMatcher)
-    {
+    public function __construct( Matcher $attributeNameMatcher ) {
         parent::__construct();
 
         $this->attributeNameMatcher = $attributeNameMatcher;
@@ -38,22 +36,20 @@ class AttributeMatcher extends TagMatcher
      * @param Matcher|mixed $value
      * @return AttributeMatcher
      */
-    public function havingValue($value)
-    {
+    public function havingValue( $value ) {
         //TODO: Throw exception if value is set
         $result = clone $this;
-        $result->valueMatcher = Util::wrapValueWithIsEqual($value);
+        $result->valueMatcher = Util::wrapValueWithIsEqual( $value );
 
         return $result;
     }
 
-    public function describeTo(Description $description)
-    {
-        $description->appendText('with attribute ')
-            ->appendDescriptionOf($this->attributeNameMatcher);
-        if ($this->valueMatcher) {
-            $description->appendText(' having value ')
-                ->appendDescriptionOf($this->valueMatcher);
+    public function describeTo( Description $description ) {
+        $description->appendText( 'with attribute ' )
+            ->appendDescriptionOf( $this->attributeNameMatcher );
+        if ( $this->valueMatcher ) {
+            $description->appendText( ' having value ' )
+                ->appendDescriptionOf( $this->valueMatcher );
         }
     }
 
@@ -63,19 +59,18 @@ class AttributeMatcher extends TagMatcher
      *
      * @return bool
      */
-    protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription)
-    {
+    protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
         /** @var \DOMAttr $attribute */
-        foreach ($item->attributes as $attribute) {
-            if ($this->valueMatcher) {
+        foreach ( $item->attributes as $attribute ) {
+            if ( $this->valueMatcher ) {
                 if (
-                    $this->attributeNameMatcher->matches($attribute->name)
-                    && $this->valueMatcher->matches($attribute->value)
+                    $this->attributeNameMatcher->matches( $attribute->name )
+                    && $this->valueMatcher->matches( $attribute->value )
                 ) {
                     return true;
                 }
             } else {
-                if ($this->attributeNameMatcher->matches($attribute->name)) {
+                if ( $this->attributeNameMatcher->matches( $attribute->name ) ) {
                     return true;
                 }
             }
