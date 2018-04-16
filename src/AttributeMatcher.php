@@ -4,17 +4,16 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
 use Hamcrest\Matcher;
-use Hamcrest\Util;
 
 class AttributeMatcher extends TagMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|string
 	 */
 	private $attributeNameMatcher;
 
 	/**
-	 * @var Matcher|null
+	 * @var Matcher|string|null
 	 */
 	private $valueMatcher;
 
@@ -24,13 +23,13 @@ class AttributeMatcher extends TagMatcher {
 	 * @return self
 	 */
 	public static function withAttribute( $attributeName ) {
-		return new static( Util::wrapValueWithIsEqual( $attributeName ) );
+		return new static( $attributeName );
 	}
 
 	/**
-	 * @param Matcher $attributeNameMatcher
+	 * @param Matcher|string $attributeNameMatcher
 	 */
-	public function __construct( Matcher $attributeNameMatcher ) {
+	public function __construct( $attributeNameMatcher ) {
 		parent::__construct();
 
 		$this->attributeNameMatcher = $attributeNameMatcher;
@@ -44,17 +43,25 @@ class AttributeMatcher extends TagMatcher {
 	public function havingValue( $value ) {
 		// TODO: Throw exception if value is set
 		$result = clone $this;
-		$result->valueMatcher = Util::wrapValueWithIsEqual( $value );
+		$result->valueMatcher = $value;
 
 		return $result;
 	}
 
 	public function describeTo( Description $description ) {
-		$description->appendText( 'with attribute ' )
-			->appendDescriptionOf( $this->attributeNameMatcher );
-		if ( $this->valueMatcher ) {
-			$description->appendText( ' having value ' )
-				->appendDescriptionOf( $this->valueMatcher );
+		$description->appendText( 'with attribute ' );
+		if ( $this->attributeNameMatcher instanceof Matcher ) {
+			$description->appendDescriptionOf( $this->attributeNameMatcher );
+		} else {
+			$description->appendValue( $this->attributeNameMatcher );
+		}
+		if ( $this->valueMatcher !== null ) {
+			$description->appendText( ' having value ' );
+			if ( $this->attributeNameMatcher instanceof Matcher ) {
+				$description->appendDescriptionOf( $this->valueMatcher );
+			} else {
+				$description->appendValue( $this->valueMatcher );
+			}
 		}
 	}
 
@@ -65,18 +72,44 @@ class AttributeMatcher extends TagMatcher {
 	 * @return bool
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		/** @var \DOMAttr $attribute */
-		foreach ( $item->attributes as $attribute ) {
-			if ( $this->valueMatcher ) {
-				if (
-					$this->attributeNameMatcher->matches( $attribute->name )
-					&& $this->valueMatcher->matches( $attribute->value )
-				) {
-					return true;
+		if ( $this->valueMatcher === null ) {
+			if ( $this->attributeNameMatcher instanceof Matcher ) {
+				/** @var \DOMAttr $attribute */
+				foreach ( $item->attributes as $attribute ) {
+					if ( $this->attributeNameMatcher->matches( $attribute->name ) ) {
+						return true;
+					}
 				}
 			} else {
-				if ( $this->attributeNameMatcher->matches( $attribute->name ) ) {
-					return true;
+				return $item->hasAttribute( $this->attributeNameMatcher );
+			}
+		} else {
+			if ( $this->attributeNameMatcher instanceof Matcher ) {
+				if ( $this->valueMatcher instanceof Matcher ) {
+					/** @var \DOMAttr $attribute */
+					foreach ( $item->attributes as $attribute ) {
+						if ( $this->attributeNameMatcher->matches( $attribute->name )
+							&& $this->valueMatcher->matches( $attribute->value )
+						) {
+							return true;
+						}
+					}
+				} else {
+					/** @var \DOMAttr $attribute */
+					foreach ( $item->attributes as $attribute ) {
+						if ( $this->attributeNameMatcher->matches( $attribute->name )
+							&& $attribute->value === $this->valueMatcher
+						) {
+							return true;
+						}
+					}
+				}
+			} else {
+				if ( $this->valueMatcher instanceof Matcher ) {
+					return $item->hasAttribute( $this->attributeNameMatcher )
+						&& $this->valueMatcher->matches( $item->getAttribute( $this->attributeNameMatcher ) );
+				} else {
+					return $item->getAttribute( $this->attributeNameMatcher ) === $this->valueMatcher;
 				}
 			}
 		}

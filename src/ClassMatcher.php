@@ -4,12 +4,11 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
 use Hamcrest\Matcher;
-use Hamcrest\Util;
 
 class ClassMatcher extends TagMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|string
 	 */
 	private $classMatcher;
 
@@ -19,16 +18,24 @@ class ClassMatcher extends TagMatcher {
 	 * @return self
 	 */
 	public static function withClass( $class ) {
-		return new static( Util::wrapValueWithIsEqual( $class ) );
+		return new static( $class );
 	}
 
-	public function __construct( Matcher $class ) {
+	/**
+	 * @param Matcher|string $class
+	 */
+	public function __construct( $class ) {
 		parent::__construct();
 		$this->classMatcher = $class;
 	}
 
 	public function describeTo( Description $description ) {
-		$description->appendText( 'with class ' )->appendDescriptionOf( $this->classMatcher );
+		$description->appendText( 'with class ' );
+		if ( $this->classMatcher instanceof Matcher ) {
+			$description->appendDescriptionOf( $this->classMatcher );
+		} else {
+			$description->appendValue( $this->classMatcher );
+		}
 	}
 
 	/**
@@ -40,14 +47,20 @@ class ClassMatcher extends TagMatcher {
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
 		$classAttribute = $item->getAttribute( 'class' );
 
-		$classes = preg_split( '/\s+/u', $classAttribute );
-		foreach ( $classes as $class ) {
-			if ( $this->classMatcher->matches( $class ) ) {
-				return true;
+		if ( $this->classMatcher instanceof Matcher ) {
+			$classes = preg_split( '/\s+/u', $classAttribute );
+			foreach ( $classes as $class ) {
+				if ( $this->classMatcher->matches( $class ) ) {
+					return true;
+				}
 			}
+			return false;
+		} else {
+			return (bool)preg_match(
+				'/(^|\s)' . preg_quote( $this->classMatcher, '/' ) . '(\s|$)/u',
+				$classAttribute
+			);
 		}
-
-		return false;
 	}
 
 }

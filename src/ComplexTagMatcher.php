@@ -3,7 +3,6 @@
 namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Core\AllOf;
-use Hamcrest\Core\IsEqual;
 use InvalidArgumentException;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
@@ -83,9 +82,13 @@ class ComplexTagMatcher extends TagMatcher {
 		$classMatchers = $this->createClassMatchers( $targetTag );
 
 		return AllOf::allOf(
-			new TagNameMatcher( IsEqual::equalTo( $targetTag->tagName ) ),
-			call_user_func_array( [ AllOf::class, 'allOf' ], $attributeMatchers ),
-			call_user_func_array( [ AllOf::class, 'allOf' ], $classMatchers )
+			TagNameMatcher::withTagName( $targetTag->tagName ),
+			count( $attributeMatchers ) === 1
+				? $attributeMatchers[0]
+				: call_user_func_array( [ AllOf::class, 'allOf' ], $attributeMatchers ),
+			count( $classMatchers ) === 1
+				? $classMatchers[0]
+				: call_user_func_array( [ AllOf::class, 'allOf' ], $classMatchers )
 		);
 	}
 
@@ -182,9 +185,9 @@ class ComplexTagMatcher extends TagMatcher {
 				continue;
 			}
 
-			$attributeMatcher = new AttributeMatcher( IsEqual::equalTo( $attribute->name ) );
+			$attributeMatcher = AttributeMatcher::withAttribute( $attribute->name );
 			if ( !$this->isBooleanAttribute( $inputHtml, $attribute->name ) ) {
-				$attributeMatcher = $attributeMatcher->havingValue( IsEqual::equalTo( $attribute->value ) );
+				$attributeMatcher = $attributeMatcher->havingValue( $attribute->value );
 			}
 
 			$attributeMatchers[] = $attributeMatcher;
@@ -204,7 +207,7 @@ class ComplexTagMatcher extends TagMatcher {
 			if ( $expectedClass === '' ) {
 				continue;
 			}
-			$classMatchers[] = new ClassMatcher( IsEqual::equalTo( $expectedClass ) );
+			$classMatchers[] = ClassMatcher::withClass( $expectedClass );
 		}
 		return $classMatchers;
 	}
