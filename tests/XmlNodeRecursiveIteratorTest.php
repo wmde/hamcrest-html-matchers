@@ -37,10 +37,7 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		libxml_clear_errors();
 		libxml_use_internal_errors( $internalErrors );
-		$DOMNodeList = iterator_to_array( $DOMDocument->documentElement->childNodes );
-
-		$body = array_shift( $DOMNodeList );
-		return $body->childNodes;
+		return $DOMDocument->documentElement->childNodes->item( 0 )->childNodes;
 	}
 
 	/**

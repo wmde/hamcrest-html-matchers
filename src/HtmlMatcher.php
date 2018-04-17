@@ -68,8 +68,8 @@ class HtmlMatcher extends DiagnosingMatcher {
 			$result = false;
 		}
 
-		if ( $result === false ) {
-			return $result;
+		if ( !$result ) {
+			return false;
 		}
 		$mismatchDescription->appendText( 'valid html piece ' );
 

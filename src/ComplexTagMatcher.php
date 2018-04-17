@@ -54,13 +54,14 @@ class ComplexTagMatcher extends TagMatcher {
 	 * @return bool
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		$result = $this->matcher->matches( $item );
-		if ( !$result ) {
-			$mismatchDescription->appendText( 'was `' )
-				->appendText( $this->elementToString( $item ) )
-				->appendText( '`' );
+		if ( $this->matcher->matches( $item ) ) {
+			return true;
 		}
-		return $result;
+
+		$mismatchDescription->appendText( 'was `' )
+			->appendText( $this->elementToString( $item ) )
+			->appendText( '`' );
+		return false;
 	}
 
 	private function createMatcherFromHtml( $htmlOutline ) {
@@ -129,13 +130,12 @@ class ComplexTagMatcher extends TagMatcher {
 	 * @throws \InvalidArgumentException
 	 */
 	private function getSingleTagFromThe( \DOMDocument $document ) {
-		$directChildren = iterator_to_array( $document->documentElement->childNodes );
+		$directChildren = $document->documentElement->childNodes->item( 0 )->childNodes;
 
-		$body = array_shift( $directChildren );
-		$directChildren = iterator_to_array( $body->childNodes );
-
-		if ( count( $directChildren ) !== 1 ) {
-			throw new InvalidArgumentException( 'Expected exactly 1 tag description, got ' . count( $directChildren ) );
+		if ( $directChildren->length !== 1 ) {
+			throw new InvalidArgumentException(
+				'Expected exactly 1 tag description, got ' . $directChildren->length
+			);
 		}
 
 		return $directChildren[0];
