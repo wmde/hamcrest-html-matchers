@@ -120,6 +120,7 @@ class ComplexTagMatcher extends TagMatcher {
 		$internalErrors = libxml_use_internal_errors( true );
 		$document = new \DOMDocument();
 
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$document->loadHTML( $html ) ) {
 			throw new \InvalidArgumentException( "There was some parsing error of `$html`" );
 		}
@@ -155,7 +156,9 @@ class ComplexTagMatcher extends TagMatcher {
 		$directChildren = iterator_to_array( $body->childNodes );
 
 		if ( count( $directChildren ) !== 1 ) {
-			throw new InvalidArgumentException( 'Expected exactly 1 tag description, got ' . count( $directChildren ) );
+			throw new InvalidArgumentException(
+				'Expected exactly 1 tag description, got ' . count( $directChildren )
+			);
 		}
 
 		return $directChildren[0];

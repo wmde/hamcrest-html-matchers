@@ -39,12 +39,19 @@ class HtmlMatcher extends DiagnosingMatcher {
 		}
 	}
 
+	/**
+	 * @param string $html
+	 * @param Description $mismatchDescription
+	 *
+	 * @return bool
+	 */
 	protected function matchesWithDiagnosticDescription( $html, Description $mismatchDescription ) {
 		$internalErrors = libxml_use_internal_errors( true );
 		$document = new \DOMDocument();
 
 		$html = $this->escapeScriptTagContents( $html );
 
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$document->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) ) ) {
 			$mismatchDescription->appendText( 'there was some parsing error' );
 			return false;

@@ -31,6 +31,7 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 		$internalErrors = libxml_use_internal_errors( true );
 		$DOMDocument = new \DOMDocument();
 
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$DOMDocument->loadHTML( $html ) ) {
 			throw new \RuntimeException( 'Filed to parse HTML' );
 		}
