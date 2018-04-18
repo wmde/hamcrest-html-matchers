@@ -138,7 +138,7 @@ class ComplexTagMatcher extends TagMatcher {
 			);
 		}
 
-		return $directChildren[0];
+		return $directChildren->item( 0 );
 	}
 
 	private function assertTagDoesNotContainChildren( \DOMElement $targetTag ) {
