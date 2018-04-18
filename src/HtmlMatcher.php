@@ -22,7 +22,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	/**
 	 * @param Matcher $elementMatcher
 	 *
-	 * @return HtmlMatcher
+	 * @return self
 	 */
 	public static function htmlPiece( Matcher $elementMatcher = null ) {
 		return new static( $elementMatcher );
@@ -83,6 +83,11 @@ class HtmlMatcher extends DiagnosingMatcher {
 		return $result;
 	}
 
+	/**
+	 * @param \LibXMLError $error
+	 *
+	 * @return bool
+	 */
 	private function isUnknownTagError( \LibXMLError $error ) {
 		return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
 	}

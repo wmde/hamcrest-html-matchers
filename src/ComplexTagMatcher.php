@@ -28,12 +28,16 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param string $htmlOutline
+	 *
 	 * @return self
 	 */
 	public static function tagMatchingOutline( $htmlOutline ) {
 		return new self( $htmlOutline );
 	}
 
+	/**
+	 * @param string $tagHtmlRepresentation
+	 */
 	public function __construct( $tagHtmlRepresentation ) {
 		parent::__construct();
 
@@ -63,6 +67,11 @@ class ComplexTagMatcher extends TagMatcher {
 		return $result;
 	}
 
+	/**
+	 * @param string $htmlOutline
+	 *
+	 * @return Matcher
+	 */
 	private function createMatcherFromHtml( $htmlOutline ) {
 		$document = $this->parseHtml( $htmlOutline );
 		$targetTag = $this->getSingleTagFromThe( $document );
@@ -79,10 +88,21 @@ class ComplexTagMatcher extends TagMatcher {
 		);
 	}
 
+	/**
+	 * @param \LibXMLError $error
+	 *
+	 * @return bool
+	 */
 	private function isUnknownTagError( \LibXMLError $error ) {
 		return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
 	}
 
+	/**
+	 * @param string $inputHtml
+	 * @param string $attributeName
+	 *
+	 * @return bool
+	 */
 	private function isBooleanAttribute( $inputHtml, $attributeName ) {
 		$quotedName = preg_quote( $attributeName, '/' );
 
@@ -91,7 +111,7 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param $html
+	 * @param string $html
 	 *
 	 * @return \DOMDocument
 	 * @throws \InvalidArgumentException
@@ -149,7 +169,8 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param string $inputHtml
-	 * @param $targetTag
+	 * @param \DOMElement $targetTag
+	 *
 	 * @return AttributeMatcher[]
 	 */
 	private function createAttributeMatchers( $inputHtml, \DOMElement $targetTag ) {
@@ -172,9 +193,10 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param \DOMElement $targetTag
+	 *
 	 * @return ClassMatcher[]
 	 */
-	private function createClassMatchers( $targetTag ) {
+	private function createClassMatchers( \DOMElement $targetTag ) {
 		$classMatchers = [];
 		$classValue = $targetTag->getAttribute( 'class' );
 		foreach ( explode( ' ', $classValue ) as $expectedClass ) {
@@ -186,6 +208,11 @@ class ComplexTagMatcher extends TagMatcher {
 		return $classMatchers;
 	}
 
+	/**
+	 * @param \DOMElement $element
+	 *
+	 * @return string
+	 */
 	private function elementToString( \DOMElement $element ) {
 		$newDocument = new \DOMDocument();
 		$cloned = $element->cloneNode( true );

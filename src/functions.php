@@ -4,7 +4,7 @@ use Hamcrest\Matcher;
 
 if ( !function_exists( 'htmlPiece' ) ) {
 	/**
-	 * @param mixed $elementMatcher
+	 * @param Matcher|null $elementMatcher
 	 *
 	 * @return \WMDE\HamcrestHtml\HtmlMatcher
 	 */
