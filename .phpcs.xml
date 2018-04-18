@@ -1,16 +1,19 @@
 <?xml version="1.0"?>
 <ruleset>
 	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
-		<exclude name="Generic.PHP.NoSilencedErrors" />
-		<exclude name="MediaWiki.Commenting.FunctionComment" />
-		<exclude name="MediaWiki.Commenting.PhpunitAnnotations" />
-		<exclude name="MediaWiki.NamingConventions.LowerCamelFunctionsName" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTest" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
 	</rule>
 
 	<rule ref="Generic.Files.LineLength">
 		<properties>
-			<property name="lineLimit" value="116" />
+			<property name="lineLimit" value="105" />
 		</properties>
+	</rule>
+
+	<rule ref="MediaWiki.NamingConventions.LowerCamelFunctionsName">
+		<exclude-pattern>tests/*Test\.php</exclude-pattern>
 	</rule>
 
 	<file>.</file>
