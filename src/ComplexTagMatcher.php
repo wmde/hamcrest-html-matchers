@@ -156,6 +156,7 @@ class ComplexTagMatcher extends TagMatcher {
 		if ( $directChildren->length !== 1 ) {
 			throw new InvalidArgumentException(
 				'Expected exactly 1 tag description, got ' . $directChildren->length
+			);
 		}
 
 		return $directChildren->item( 0 );
