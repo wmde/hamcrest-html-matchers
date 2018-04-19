@@ -37,10 +37,7 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
 		if ( $item instanceof \DOMDocument ) {
-			$directChildren = iterator_to_array( $item->documentElement->childNodes );
-
-			$body = array_shift( $directChildren );
-			$directChildren = $body->childNodes;
+			$directChildren = $item->documentElement->childNodes->item( 0 )->childNodes;
 		} else {
 			$directChildren = $item->childNodes;
 		}
@@ -55,7 +52,7 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 		}
 
 		foreach ( new XmlNodeRecursiveIterator( $directChildren ) as $child ) {
-			if ( $this->matcher && $this->matcher->matches( $child ) ) {
+			if ( $this->matcher->matches( $child ) ) {
 				return true;
 			}
 		}

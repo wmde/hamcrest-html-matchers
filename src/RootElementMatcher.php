@@ -41,29 +41,27 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 	 * @return bool
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		$DOMNodeList = iterator_to_array( $item->documentElement->childNodes );
-
-		$body = array_shift( $DOMNodeList );
-		$DOMNodeList = iterator_to_array( $body->childNodes );
-		if ( count( $DOMNodeList ) > 1 ) {
+		$DOMNodeList = $item->documentElement->childNodes->item( 0 )->childNodes;
+		if ( $DOMNodeList->length > 1 ) {
 			// TODO Test this description
-			$mismatchDescription->appendText( 'having ' . count( $DOMNodeList ) . ' root elements ' );
+			$mismatchDescription->appendText( 'having ' . $DOMNodeList->length . ' root elements ' );
 			return false;
 		}
 
-		$target = array_shift( $DOMNodeList );
+		$target = $DOMNodeList->item( 0 );
 		if ( !$target ) {
 			// TODO Reproduce?
 			$mismatchDescription->appendText( 'having no root elements ' );
 			return false;
 		}
+
 		if ( $this->tagMatcher ) {
 			$mismatchDescription->appendText( 'root element ' );
 			$this->tagMatcher->describeMismatch( $target, $mismatchDescription );
 			return $this->tagMatcher->matches( $target );
 		}
 
-		return (bool)$target;
+		return true;
 	}
 
 }

@@ -37,13 +37,9 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
 		if ( $item instanceof \DOMDocument ) {
-			$directChildren = iterator_to_array( $item->documentElement->childNodes );
-
-			$body = array_shift( $directChildren );
-			$directChildren = $body->childNodes;
-		} else {
-			$directChildren = $item->childNodes;
+			$item = $item->documentElement->childNodes->item( 0 );
 		}
+		$directChildren = $item->childNodes;
 
 		if ( $directChildren->length === 0 ) {
 			$mismatchDescription->appendText( 'with no direct children' );
@@ -55,11 +51,11 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher {
 		$mismatchDescription->appendText( "with direct {$childWord} " );
 
 		if ( !$this->matcher ) {
-			return count( $directChildren ) !== 0;
+			return $directChildren->length !== 0;
 		}
 
 		foreach ( $directChildren as $child ) {
-			if ( $this->matcher && $this->matcher->matches( $child ) ) {
+			if ( $this->matcher->matches( $child ) ) {
 				return true;
 			}
 		}
