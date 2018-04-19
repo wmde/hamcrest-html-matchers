@@ -13,6 +13,11 @@ class ClassMatcher extends TagMatcher {
 	 */
 	private $classMatcher;
 
+	/**
+	 * @param Matcher|string $class
+	 *
+	 * @return self
+	 */
 	public static function withClass( $class ) {
 		return new static( Util::wrapValueWithIsEqual( $class ) );
 	}

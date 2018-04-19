@@ -10,13 +10,13 @@ class XmlNodeRecursiveIterator extends \ArrayIterator {
 	}
 
 	/**
-	 * @param array $queue
+	 * @param \DOMNode[] $queue
 	 * @param \DOMNodeList $nodeList
 	 *
-	 * @return array New queue
+	 * @return \DOMNode[] New queue
 	 */
 	private function addElementsToQueue( array $queue, \DOMNodeList $nodeList ) {
-		/** @var \DOMElement $node */
+		/** @var \DOMNode $node */
 		foreach ( $nodeList as $node ) {
 			$queue[] = $node;
 			if ( $node->childNodes !== null ) {

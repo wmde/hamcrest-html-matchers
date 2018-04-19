@@ -28,12 +28,16 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param string $htmlOutline
+	 *
 	 * @return self
 	 */
 	public static function tagMatchingOutline( $htmlOutline ) {
 		return new self( $htmlOutline );
 	}
 
+	/**
+	 * @param string $tagHtmlRepresentation
+	 */
 	public function __construct( $tagHtmlRepresentation ) {
 		parent::__construct();
 
@@ -64,6 +68,11 @@ class ComplexTagMatcher extends TagMatcher {
 		return false;
 	}
 
+	/**
+	 * @param string $htmlOutline
+	 *
+	 * @return Matcher
+	 */
 	private function createMatcherFromHtml( $htmlOutline ) {
 		$document = $this->parseHtml( $htmlOutline );
 		$targetTag = $this->getSingleTagFromThe( $document );
@@ -80,10 +89,21 @@ class ComplexTagMatcher extends TagMatcher {
 		);
 	}
 
+	/**
+	 * @param \LibXMLError $error
+	 *
+	 * @return bool
+	 */
 	private function isUnknownTagError( \LibXMLError $error ) {
 		return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
 	}
 
+	/**
+	 * @param string $inputHtml
+	 * @param string $attributeName
+	 *
+	 * @return bool
+	 */
 	private function isBooleanAttribute( $inputHtml, $attributeName ) {
 		$quotedName = preg_quote( $attributeName, '/' );
 
@@ -92,7 +112,7 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param $html
+	 * @param string $html
 	 *
 	 * @return \DOMDocument
 	 * @throws \InvalidArgumentException
@@ -101,6 +121,7 @@ class ComplexTagMatcher extends TagMatcher {
 		$internalErrors = libxml_use_internal_errors( true );
 		$document = new \DOMDocument();
 
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$document->loadHTML( $html ) ) {
 			throw new \InvalidArgumentException( "There was some parsing error of `$html`" );
 		}
@@ -135,7 +156,6 @@ class ComplexTagMatcher extends TagMatcher {
 		if ( $directChildren->length !== 1 ) {
 			throw new InvalidArgumentException(
 				'Expected exactly 1 tag description, got ' . $directChildren->length
-			);
 		}
 
 		return $directChildren->item( 0 );
@@ -149,7 +169,8 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param string $inputHtml
-	 * @param $targetTag
+	 * @param \DOMElement $targetTag
+	 *
 	 * @return AttributeMatcher[]
 	 */
 	private function createAttributeMatchers( $inputHtml, \DOMElement $targetTag ) {
@@ -172,9 +193,10 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param \DOMElement $targetTag
+	 *
 	 * @return ClassMatcher[]
 	 */
-	private function createClassMatchers( $targetTag ) {
+	private function createClassMatchers( \DOMElement $targetTag ) {
 		$classMatchers = [];
 		$classValue = $targetTag->getAttribute( 'class' );
 		foreach ( explode( ' ', $classValue ) as $expectedClass ) {
@@ -186,6 +208,11 @@ class ComplexTagMatcher extends TagMatcher {
 		return $classMatchers;
 	}
 
+	/**
+	 * @param \DOMElement $element
+	 *
+	 * @return string
+	 */
 	private function elementToString( \DOMElement $element ) {
 		$newDocument = new \DOMDocument();
 		$cloned = $element->cloneNode( true );

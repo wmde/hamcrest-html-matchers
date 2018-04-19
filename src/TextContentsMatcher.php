@@ -13,6 +13,11 @@ class TextContentsMatcher extends TagMatcher {
 	 */
 	private $matcher;
 
+	/**
+	 * @param Matcher|string $text
+	 *
+	 * @return self
+	 */
 	public static function havingTextContents( $text ) {
 		return new static( Util::wrapValueWithIsEqual( $text ) );
 	}

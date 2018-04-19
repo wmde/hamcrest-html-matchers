@@ -18,13 +18,17 @@ class AttributeMatcher extends TagMatcher {
 	 */
 	private $valueMatcher;
 
+	/**
+	 * @param Matcher|string $attributeName
+	 *
+	 * @return self
+	 */
 	public static function withAttribute( $attributeName ) {
 		return new static( Util::wrapValueWithIsEqual( $attributeName ) );
 	}
 
 	/**
-	 * AttributeMatcher constructor.
-	 * @param \Hamcrest\Matcher $attributeNameMatcher
+	 * @param Matcher $attributeNameMatcher
 	 */
 	public function __construct( Matcher $attributeNameMatcher ) {
 		parent::__construct();
@@ -33,7 +37,8 @@ class AttributeMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param Matcher|mixed $value
+	 * @param Matcher|string $value
+	 *
 	 * @return AttributeMatcher
 	 */
 	public function havingValue( $value ) {

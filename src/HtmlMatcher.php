@@ -22,7 +22,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	/**
 	 * @param Matcher $elementMatcher
 	 *
-	 * @return HtmlMatcher
+	 * @return self
 	 */
 	public static function htmlPiece( Matcher $elementMatcher = null ) {
 		return new static( $elementMatcher );
@@ -39,12 +39,19 @@ class HtmlMatcher extends DiagnosingMatcher {
 		}
 	}
 
+	/**
+	 * @param string $html
+	 * @param Description $mismatchDescription
+	 *
+	 * @return bool
+	 */
 	protected function matchesWithDiagnosticDescription( $html, Description $mismatchDescription ) {
 		$internalErrors = libxml_use_internal_errors( true );
 		$document = new \DOMDocument();
 
 		$html = $this->escapeScriptTagContents( $html );
 
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$document->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' ) ) ) {
 			$mismatchDescription->appendText( 'there was some parsing error' );
 			return false;
@@ -83,6 +90,11 @@ class HtmlMatcher extends DiagnosingMatcher {
 		return $result;
 	}
 
+	/**
+	 * @param \LibXMLError $error
+	 *
+	 * @return bool
+	 */
 	private function isUnknownTagError( \LibXMLError $error ) {
 		return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
 	}

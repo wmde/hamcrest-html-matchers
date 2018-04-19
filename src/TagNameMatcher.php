@@ -13,6 +13,11 @@ class TagNameMatcher extends TagMatcher {
 	 */
 	private $tagNameMatcher;
 
+	/**
+	 * @param Matcher|string $tagName
+	 *
+	 * @return self
+	 */
 	public static function withTagName( $tagName ) {
 		return new static( Util::wrapValueWithIsEqual( $tagName ) );
 	}
