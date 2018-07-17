@@ -47,6 +47,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	 */
 	protected function matchesWithDiagnosticDescription( $html, Description $mismatchDescription ) {
 		$internalErrors = libxml_use_internal_errors( true );
+		libxml_clear_errors();
 		$document = new \DOMDocument();
 
 		$html = $this->escapeScriptTagContents( $html );
