@@ -100,4 +100,15 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 			) ) ) ) );
 	}
 
+	/**
+	 * @test
+	 */
+	public function considersValidHtml_WhenUnrelatedXMLErrors() {
+		libxml_use_internal_errors( true );
+		$document = new \DOMDocument();
+		$document->loadHTML( 'ThisIsNoHTML<' );
+
+		assertThat( '<html></html>', is( HtmlMatcher::htmlPiece() ) );
+	}
+
 }
