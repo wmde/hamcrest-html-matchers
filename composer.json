@@ -9,13 +9,13 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
+        "php": ">=7.2",
         "ext-mbstring": "*",
-        "hamcrest/hamcrest-php": "^1.1.1||^2.0"
+        "hamcrest/hamcrest-php": "^2.0.1"
     },
     "require-dev": {
-        "mediawiki/mediawiki-codesniffer": "18.0.0",
-        "phpunit/phpunit": "^4.8.35"
+        "mediawiki/mediawiki-codesniffer": "35.0.0",
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": {

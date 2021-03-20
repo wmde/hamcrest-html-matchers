@@ -25,7 +25,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	public function assertFails_WhenTagInHtmlIsDiffersFromGivenTagName() {
 		$html = '<a></a>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild( ComplexTagMatcher::tagMatchingOutline( '<p/>' ) ) ) ) );
 	}
 
@@ -33,7 +33,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	 * @test
 	 */
 	public function canNotCreateMatcherWithEmptyDescription() {
-		$this->setExpectedException( \Exception::class );
+		$this->expectException( \Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '' );
 	}
 
@@ -41,7 +41,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	 * @test
 	 */
 	public function canNotCreateMatcherExpectingTwoElements() {
-		$this->setExpectedException( \Exception::class );
+		$this->expectException( \Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p></p><b></b>' );
 	}
 
@@ -49,7 +49,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	 * @test
 	 */
 	public function canNotCreateMatcherWithChildElement() {
-		$this->setExpectedException( \Exception::class );
+		$this->expectException( \Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p><b></b></p>' );
 	}
 
@@ -59,7 +59,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	public function assertFails_WhenTagInHtmlDoesNotHaveExpectedAttribute() {
 		$html = '<p></p>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<p id="some-id"/>' ) ) ) ) );
 	}
@@ -80,7 +80,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	public function assertFails_WhenTagInHtmlDoesNotHaveAllExpectedAttribute() {
 		$html = '<p id="some-id"></p>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<p id="some-id" onclick="void();"/>' ) ) ) ) );
 	}
@@ -101,7 +101,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	public function assertFails_WhenExpectAttributeWithEmptyValueButItIsNotEmpty() {
 		$html = '<input attr1="something">';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input attr1=""/>' ) ) ) ) );
 	}
@@ -122,7 +122,7 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	public function assertFails_WhenGivenTagDoesNotHaveExpectedClass() {
 		$html = '<input class="class1 class2">';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input class="class3"/>' ) ) ) ) );
 	}
