@@ -2,9 +2,11 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMDocument;
 use Hamcrest\Description;
 use Hamcrest\DiagnosingMatcher;
 use Hamcrest\Matcher;
+use LibXMLError;
 
 class HtmlMatcher extends DiagnosingMatcher {
 
@@ -48,7 +50,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	protected function matchesWithDiagnosticDescription( $html, Description $mismatchDescription ) {
 		$internalErrors = libxml_use_internal_errors( true );
 		libxml_clear_errors();
-		$document = new \DOMDocument();
+		$document = new DOMDocument();
 
 		$html = $this->escapeScriptTagContents( $html );
 
@@ -63,7 +65,6 @@ class HtmlMatcher extends DiagnosingMatcher {
 		libxml_use_internal_errors( $internalErrors );
 
 		$result = true;
-		/** @var \LibXMLError $error */
 		foreach ( $errors as $error ) {
 			if ( $this->isUnknownTagError( $error ) ) {
 				continue;
@@ -92,11 +93,11 @@ class HtmlMatcher extends DiagnosingMatcher {
 	}
 
 	/**
-	 * @param \LibXMLError $error
+	 * @param LibXMLError $error
 	 *
 	 * @return bool
 	 */
-	private function isUnknownTagError( \LibXMLError $error ) {
+	private function isUnknownTagError( LibXMLError $error ) {
 		return $error->code === self::XML_UNKNOWN_TAG_ERROR_CODE;
 	}
 
