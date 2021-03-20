@@ -10,6 +10,8 @@
     ],
     "require": {
         "php": ">=7.2",
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
         "hamcrest/hamcrest-php": "^2.0.1"
     },
