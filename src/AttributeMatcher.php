@@ -64,7 +64,9 @@ class AttributeMatcher extends TagMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		/** @var \DOMAttr $attribute */
 		foreach ( $item->attributes as $attribute ) {
 			if ( $this->valueMatcher ) {

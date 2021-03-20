@@ -35,7 +35,9 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		if ( $item instanceof \DOMDocument ) {
 			$directChildren = $item->documentElement->childNodes->item( 0 )->childNodes;
 		} else {

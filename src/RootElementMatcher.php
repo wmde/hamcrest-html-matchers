@@ -40,7 +40,9 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		$DOMNodeList = $item->documentElement->childNodes->item( 0 )->childNodes;
 		if ( $DOMNodeList->length > 1 ) {
 			// TODO Test this description

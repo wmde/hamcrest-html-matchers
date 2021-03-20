@@ -12,7 +12,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	 * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
 	 * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
 	 */
-	const XML_UNKNOWN_TAG_ERROR_CODE = 801;
+	private const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
 	/**
 	 * @var Matcher
@@ -20,7 +20,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	private $elementMatcher;
 
 	/**
-	 * @param Matcher $elementMatcher
+	 * @param Matcher|null $elementMatcher
 	 *
 	 * @return self
 	 */

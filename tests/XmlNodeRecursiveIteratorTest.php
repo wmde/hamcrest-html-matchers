@@ -5,7 +5,7 @@ namespace WMDE\HamcrestHtml\Test;
 use WMDE\HamcrestHtml\XmlNodeRecursiveIterator;
 
 /**
- * @covers WMDE\HamcrestHtml\XmlNodeRecursiveIterator
+ * @covers \WMDE\HamcrestHtml\XmlNodeRecursiveIterator
  */
 class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 
@@ -42,15 +42,14 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @param $recursiveIterator
+	 * @param Traversable $recursiveIterator
 	 * @return array
 	 */
 	protected function collectTagNames( $recursiveIterator ) {
 		$array = iterator_to_array( $recursiveIterator );
-		$tagNames = array_map( function ( \DOMElement $node ) {
+		return array_map( function ( \DOMElement $node ) {
 			return $node->tagName;
 		}, $array );
-		return $tagNames;
 	}
 
 }

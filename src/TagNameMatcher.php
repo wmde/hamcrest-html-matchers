@@ -38,7 +38,9 @@ class TagNameMatcher extends TagMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		if ( $this->tagNameMatcher->matches( $item->tagName ) ) {
 			return true;
 		}

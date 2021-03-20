@@ -37,7 +37,9 @@ class ClassMatcher extends TagMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		$classAttribute = $item->getAttribute( 'class' );
 
 		$classes = preg_split( '/\s+/u', $classAttribute );

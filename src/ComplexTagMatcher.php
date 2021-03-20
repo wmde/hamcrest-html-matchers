@@ -4,9 +4,9 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Core\AllOf;
 use Hamcrest\Core\IsEqual;
-use InvalidArgumentException;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
+use InvalidArgumentException;
 
 class ComplexTagMatcher extends TagMatcher {
 
@@ -14,7 +14,7 @@ class ComplexTagMatcher extends TagMatcher {
 	 * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
 	 * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
 	 */
-	const XML_UNKNOWN_TAG_ERROR_CODE = 801;
+	private const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
 	/**
 	 * @var string
@@ -45,6 +45,9 @@ class ComplexTagMatcher extends TagMatcher {
 		$this->matcher = $this->createMatcherFromHtml( $tagHtmlRepresentation );
 	}
 
+	/**
+	 * @param Description $description
+	 */
 	public function describeTo( Description $description ) {
 		$description->appendText( 'tag matching outline `' )
 			->appendText( $this->tagHtmlOutline )
@@ -57,7 +60,9 @@ class ComplexTagMatcher extends TagMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		if ( $this->matcher->matches( $item ) ) {
 			return true;
 		}
@@ -184,7 +189,9 @@ class ComplexTagMatcher extends TagMatcher {
 
 			$attributeMatcher = new AttributeMatcher( IsEqual::equalTo( $attribute->name ) );
 			if ( !$this->isBooleanAttribute( $inputHtml, $attribute->name ) ) {
-				$attributeMatcher = $attributeMatcher->havingValue( IsEqual::equalTo( $attribute->value ) );
+				$attributeMatcher = $attributeMatcher->havingValue(
+					IsEqual::equalTo( $attribute->value )
+				);
 			}
 
 			$attributeMatchers[] = $attributeMatcher;
