@@ -15,7 +15,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	private const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|null
 	 */
 	private $elementMatcher;
 
@@ -72,7 +72,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 			$mismatchDescription->appendText( 'there was parsing error: ' )
 				->appendText( trim( $error->message ) )
 				->appendText( ' on line ' )
-				->appendText( $error->line );
+				->appendText( (string)$error->line );
 			$result = false;
 		}
 

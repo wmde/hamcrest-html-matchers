@@ -164,6 +164,7 @@ class ComplexTagMatcher extends TagMatcher {
 			);
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable
 		return $directChildren->item( 0 );
 	}
 

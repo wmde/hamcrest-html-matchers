@@ -9,7 +9,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|null
 	 */
 	private $matcher;
 
@@ -56,6 +56,7 @@ class DirectChildElementMatcher extends TypeSafeDiagnosingMatcher {
 			return $directChildren->length !== 0;
 		}
 
+		$child = null;
 		foreach ( $directChildren as $child ) {
 			if ( $this->matcher->matches( $child ) ) {
 				return true;

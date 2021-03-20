@@ -9,7 +9,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|null
 	 */
 	private $tagMatcher;
 
