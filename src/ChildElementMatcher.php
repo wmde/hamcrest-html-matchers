@@ -9,15 +9,23 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 
 	/**
-	 * @var Matcher|null
+	 * @var Matcher|string|null
 	 */
 	private $matcher;
 
-	public static function havingChild( Matcher $elementMatcher = null ) {
+	/**
+	 * @param Matcher|string|null $elementMatcher
+	 *
+	 * @return self
+	 */
+	public static function havingChild( $elementMatcher = null ) {
 		return new static( $elementMatcher );
 	}
 
-	public function __construct( Matcher $matcher = null ) {
+	/**
+	 * @param Matcher|string|null $matcher
+	 */
+	public function __construct( $matcher = null ) {
 		parent::__construct( \DOMNode::class );
 		$this->matcher = $matcher;
 	}
@@ -25,7 +33,11 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	public function describeTo( Description $description ) {
 		$description->appendText( 'having child ' );
 		if ( $this->matcher ) {
-			$description->appendDescriptionOf( $this->matcher );
+			if ( $this->matcher instanceof Matcher ) {
+				$description->appendDescriptionOf( $this->matcher );
+			} else {
+				$description->appendValue( $this->matcher );
+			}
 		}
 	}
 
@@ -37,10 +49,10 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
 		if ( $item instanceof \DOMDocument ) {
-			$directChildren = $item->documentElement->childNodes->item( 0 )->childNodes;
-		} else {
-			$directChildren = $item->childNodes;
+			$item = $item->documentElement->childNodes->item( 0 );
+			/** @var \DOMElement $item */
 		}
+		$directChildren = $item->childNodes;
 
 		if ( $directChildren->length === 0 ) {
 			$mismatchDescription->appendText( 'having no children' );
@@ -48,11 +60,17 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 		}
 
 		if ( !$this->matcher ) {
-			return $directChildren->length > 0;
+			return true;
 		}
 
-		foreach ( new XmlNodeRecursiveIterator( $directChildren ) as $child ) {
-			if ( $this->matcher->matches( $child ) ) {
+		if ( $this->matcher instanceof Matcher ) {
+			foreach ( new XmlNodeRecursiveIterator( $directChildren ) as $child ) {
+				if ( $this->matcher->matches( $child ) ) {
+					return true;
+				}
+			}
+		} else {
+			if ( $item->getElementsByTagName( $this->matcher )->length !== 0 ) {
 				return true;
 			}
 		}

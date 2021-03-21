@@ -4,12 +4,11 @@ namespace WMDE\HamcrestHtml;
 
 use Hamcrest\Description;
 use Hamcrest\Matcher;
-use Hamcrest\Util;
 
 class TagNameMatcher extends TagMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|string
 	 */
 	private $tagNameMatcher;
 
@@ -19,17 +18,24 @@ class TagNameMatcher extends TagMatcher {
 	 * @return self
 	 */
 	public static function withTagName( $tagName ) {
-		return new static( Util::wrapValueWithIsEqual( $tagName ) );
+		return new static( $tagName );
 	}
 
-	public function __construct( Matcher $tagNameMatcher ) {
+	/**
+	 * @param Matcher|string $tagNameMatcher
+	 */
+	public function __construct( $tagNameMatcher ) {
 		parent::__construct();
 		$this->tagNameMatcher = $tagNameMatcher;
 	}
 
 	public function describeTo( Description $description ) {
-		$description->appendText( 'with tag name ' )
-			->appendDescriptionOf( $this->tagNameMatcher );
+		$description->appendText( 'with tag name ' );
+		if ( $this->tagNameMatcher instanceof Matcher ) {
+			$description->appendDescriptionOf( $this->tagNameMatcher );
+		} else {
+			$description->appendValue( $this->tagNameMatcher );
+		}
 	}
 
 	/**
@@ -39,12 +45,23 @@ class TagNameMatcher extends TagMatcher {
 	 * @return bool
 	 */
 	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		if ( $this->tagNameMatcher->matches( $item->tagName ) ) {
-			return true;
+		if ( $this->tagNameMatcher instanceof Matcher ) {
+			if ( $this->tagNameMatcher->matches( $item->tagName ) ) {
+				return true;
+			}
+		} else {
+			if ( $item->tagName === $this->tagNameMatcher ) {
+				return true;
+			}
 		}
 
 		$mismatchDescription->appendText( 'tag name ' );
-		$this->tagNameMatcher->describeMismatch( $item->tagName, $mismatchDescription );
+		if ( $this->tagNameMatcher instanceof Matcher ) {
+			$this->tagNameMatcher->describeMismatch( $item->tagName, $mismatchDescription );
+		} else {
+			$mismatchDescription->appendText( 'was ' )->appendValue( $item->tagName );
+		}
+
 		return false;
 	}
 
