@@ -28,7 +28,11 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanNotCreateMatcherWithEmptyDescription() {
-		$this->expectException( \InvalidArgumentException::class );
+		if ( PHP_VERSION_ID > 80000 ) {
+			$this->expectException( \ValueError::class );
+		} else {
+			$this->expectException( \InvalidArgumentException::class );
+		}
 		ComplexTagMatcher::tagMatchingOutline( '' );
 	}
 
