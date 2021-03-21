@@ -2,12 +2,14 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use DOMDocument;
+use PHPUnit\Framework\TestCase;
 use WMDE\HamcrestHtml\HtmlMatcher;
 
 /**
  * @covers \WMDE\HamcrestHtml\HtmlMatcher
  */
-class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
+class HtmlMatcherTest extends TestCase {
 
 	/**
 	 * @dataProvider dataProvider_HtmlTagNamesIntroducedInHtml5
@@ -92,7 +94,7 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 
 	public function testConsidersValidHtml_WhenUnrelatedXMLErrors() {
 		libxml_use_internal_errors( true );
-		$document = new \DOMDocument();
+		$document = new DOMDocument();
 		$document->loadHTML( 'ThisIsNoHTML<' );
 
 		assertThat( '<html></html>', is( HtmlMatcher::htmlPiece() ) );

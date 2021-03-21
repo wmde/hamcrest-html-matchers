@@ -2,10 +2,12 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use Exception;
 use Hamcrest\AssertionError;
 use Hamcrest\Matcher;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends \PHPUnit\Framework\TestCase {
+class FunctionsTest extends TestCase {
 
 	public function testHavingRootElement_MultipleRootTags_ThrowsException() {
 		// TODO Does it make sense?
@@ -29,7 +31,7 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase {
 		$thrownException = null;
 		try {
 			assertThat( $html, is( htmlPiece( $matcher ) ) );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$thrownException = $e;
 		}
 

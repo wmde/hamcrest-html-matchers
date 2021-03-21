@@ -2,13 +2,17 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use Exception;
 use Hamcrest\AssertionError;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use ValueError;
 use WMDE\HamcrestHtml\ComplexTagMatcher;
 
 /**
  * @covers \WMDE\HamcrestHtml\ComplexTagMatcher
  */
-class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
+class ComplexTagMatcherTest extends TestCase {
 
 	public function testAssertPasses_WhenTagInHtmlHasSameTagName() {
 		$html = '<p></p>';
@@ -29,20 +33,20 @@ class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanNotCreateMatcherWithEmptyDescription() {
 		if ( PHP_VERSION_ID > 80000 ) {
-			$this->expectException( \ValueError::class );
+			$this->expectException( ValueError::class );
 		} else {
-			$this->expectException( \InvalidArgumentException::class );
+			$this->expectException( InvalidArgumentException::class );
 		}
 		ComplexTagMatcher::tagMatchingOutline( '' );
 	}
 
 	public function testCanNotCreateMatcherExpectingTwoElements() {
-		$this->expectException( \Exception::class );
+		$this->expectException( Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p></p><b></b>' );
 	}
 
 	public function testCanNotCreateMatcherWithChildElement() {
-		$this->expectException( \Exception::class );
+		$this->expectException( Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p><b></b></p>' );
 	}
 
