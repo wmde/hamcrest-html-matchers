@@ -5,13 +5,9 @@ php:
   - 7.3
   - 7.4
 
-env:
-  - LOWEST_VERSIONS=""
-  - LOWEST_VERSIONS=--prefer-lowest
-
 sudo: false
 
-install: travis_retry composer update $LOWEST_VERSIONS
+install: travis_retry composer update
 
 script: composer ci
 
