@@ -2,6 +2,8 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMAttr;
+use DOMElement;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
@@ -59,13 +61,15 @@ class AttributeMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMElement $item
+	 * @param DOMElement $item
 	 * @param Description $mismatchDescription
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		/** @var \DOMAttr $attribute */
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
+		/** @var DOMAttr $attribute */
 		foreach ( $item->attributes as $attribute ) {
 			if ( $this->valueMatcher ) {
 				if (
@@ -74,10 +78,8 @@ class AttributeMatcher extends TagMatcher {
 				) {
 					return true;
 				}
-			} else {
-				if ( $this->attributeNameMatcher->matches( $attribute->name ) ) {
-					return true;
-				}
+			} elseif ( $this->attributeNameMatcher->matches( $attribute->name ) ) {
+				return true;
 			}
 		}
 

@@ -2,12 +2,15 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use Traversable;
 use WMDE\HamcrestHtml\XmlNodeRecursiveIterator;
 
 /**
- * @covers WMDE\HamcrestHtml\XmlNodeRecursiveIterator
+ * @covers \WMDE\HamcrestHtml\XmlNodeRecursiveIterator
  */
-class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
+class XmlNodeRecursiveIteratorTest extends TestCase {
 
 	public function testIteratesAllElements_WhenFlatStructureGiven() {
 		$DOMNodeList = $this->createDomNodeListFromHtml( '<p></p>' );
@@ -33,7 +36,7 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$DOMDocument->loadHTML( $html ) ) {
-			throw new \RuntimeException( 'Filed to parse HTML' );
+			throw new RuntimeException( 'Filed to parse HTML' );
 		}
 
 		libxml_clear_errors();
@@ -42,15 +45,14 @@ class XmlNodeRecursiveIteratorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @param $recursiveIterator
+	 * @param Traversable $recursiveIterator
 	 * @return array
 	 */
 	protected function collectTagNames( $recursiveIterator ) {
 		$array = iterator_to_array( $recursiveIterator );
-		$tagNames = array_map( function ( \DOMElement $node ) {
+		return array_map( function ( \DOMElement $node ) {
 			return $node->tagName;
 		}, $array );
-		return $tagNames;
 	}
 
 }

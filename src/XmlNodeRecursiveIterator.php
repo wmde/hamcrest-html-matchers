@@ -2,6 +2,8 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMNode;
+
 class XmlNodeRecursiveIterator extends \ArrayIterator {
 
 	public function __construct( \DOMNodeList $nodeList ) {
@@ -10,13 +12,13 @@ class XmlNodeRecursiveIterator extends \ArrayIterator {
 	}
 
 	/**
-	 * @param \DOMNode[] $queue
+	 * @param DOMNode[] $queue
 	 * @param \DOMNodeList $nodeList
 	 *
-	 * @return \DOMNode[] New queue
+	 * @return DOMNode[] New queue
 	 */
 	private function addElementsToQueue( array $queue, \DOMNodeList $nodeList ) {
-		/** @var \DOMNode $node */
+		/** @var DOMNode $node */
 		foreach ( $nodeList as $node ) {
 			$queue[] = $node;
 			if ( $node->childNodes !== null ) {

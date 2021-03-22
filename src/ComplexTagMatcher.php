@@ -2,11 +2,13 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMDocument;
+use DOMElement;
 use Hamcrest\Core\AllOf;
 use Hamcrest\Core\IsEqual;
-use InvalidArgumentException;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
+use InvalidArgumentException;
 
 class ComplexTagMatcher extends TagMatcher {
 
@@ -14,7 +16,7 @@ class ComplexTagMatcher extends TagMatcher {
 	 * @link http://www.xmlsoft.org/html/libxml-xmlerror.html#xmlParserErrors
 	 * @link https://github.com/Chronic-Dev/libxml2/blob/683f296a905710ff285c28b8644ef3a3d8be9486/include/libxml/xmlerror.h#L257
 	 */
-	const XML_UNKNOWN_TAG_ERROR_CODE = 801;
+	private const XML_UNKNOWN_TAG_ERROR_CODE = 801;
 
 	/**
 	 * @var string
@@ -45,6 +47,9 @@ class ComplexTagMatcher extends TagMatcher {
 		$this->matcher = $this->createMatcherFromHtml( $tagHtmlRepresentation );
 	}
 
+	/**
+	 * @param Description $description
+	 */
 	public function describeTo( Description $description ) {
 		$description->appendText( 'tag matching outline `' )
 			->appendText( $this->tagHtmlOutline )
@@ -52,12 +57,14 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMElement $item
+	 * @param DOMElement $item
 	 * @param Description $mismatchDescription
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		if ( $this->matcher->matches( $item ) ) {
 			return true;
 		}
@@ -107,36 +114,34 @@ class ComplexTagMatcher extends TagMatcher {
 	private function isBooleanAttribute( $inputHtml, $attributeName ) {
 		$quotedName = preg_quote( $attributeName, '/' );
 
-		$attributeHasValueAssigned = preg_match( "/\b{$quotedName}\s*=/ui", $inputHtml );
-		return !$attributeHasValueAssigned;
+		return !preg_match( "/\b{$quotedName}\s*=/ui", $inputHtml );
 	}
 
 	/**
 	 * @param string $html
 	 *
-	 * @return \DOMDocument
-	 * @throws \InvalidArgumentException
+	 * @return DOMDocument
+	 * @throws InvalidArgumentException
 	 */
 	private function parseHtml( $html ) {
 		$internalErrors = libxml_use_internal_errors( true );
-		$document = new \DOMDocument();
+		$document = new DOMDocument();
 
 		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		if ( !@$document->loadHTML( $html ) ) {
-			throw new \InvalidArgumentException( "There was some parsing error of `$html`" );
+			throw new InvalidArgumentException( "There was some parsing error of `$html`" );
 		}
 
 		$errors = libxml_get_errors();
 		libxml_clear_errors();
 		libxml_use_internal_errors( $internalErrors );
 
-		/** @var \LibXMLError $error */
 		foreach ( $errors as $error ) {
 			if ( $this->isUnknownTagError( $error ) ) {
 				continue;
 			}
 
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				'There was parsing error: ' . trim( $error->message ) . ' on line ' . $error->line
 			);
 		}
@@ -145,12 +150,12 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMDocument $document
+	 * @param DOMDocument $document
 	 *
-	 * @return \DOMElement
-	 * @throws \InvalidArgumentException
+	 * @return DOMElement
+	 * @throws InvalidArgumentException
 	 */
-	private function getSingleTagFromThe( \DOMDocument $document ) {
+	private function getSingleTagFromThe( DOMDocument $document ) {
 		$directChildren = $document->documentElement->childNodes->item( 0 )->childNodes;
 
 		if ( $directChildren->length !== 1 ) {
@@ -159,10 +164,11 @@ class ComplexTagMatcher extends TagMatcher {
 			);
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable
 		return $directChildren->item( 0 );
 	}
 
-	private function assertTagDoesNotContainChildren( \DOMElement $targetTag ) {
+	private function assertTagDoesNotContainChildren( DOMElement $targetTag ) {
 		if ( $targetTag->childNodes->length > 0 ) {
 			throw new InvalidArgumentException( 'Nested elements are not allowed' );
 		}
@@ -170,11 +176,11 @@ class ComplexTagMatcher extends TagMatcher {
 
 	/**
 	 * @param string $inputHtml
-	 * @param \DOMElement $targetTag
+	 * @param DOMElement $targetTag
 	 *
 	 * @return AttributeMatcher[]
 	 */
-	private function createAttributeMatchers( $inputHtml, \DOMElement $targetTag ) {
+	private function createAttributeMatchers( $inputHtml, DOMElement $targetTag ) {
 		$attributeMatchers = [];
 		/** @var \DOMAttr $attribute */
 		foreach ( $targetTag->attributes as $attribute ) {
@@ -184,7 +190,9 @@ class ComplexTagMatcher extends TagMatcher {
 
 			$attributeMatcher = new AttributeMatcher( IsEqual::equalTo( $attribute->name ) );
 			if ( !$this->isBooleanAttribute( $inputHtml, $attribute->name ) ) {
-				$attributeMatcher = $attributeMatcher->havingValue( IsEqual::equalTo( $attribute->value ) );
+				$attributeMatcher = $attributeMatcher->havingValue(
+					IsEqual::equalTo( $attribute->value )
+				);
 			}
 
 			$attributeMatchers[] = $attributeMatcher;
@@ -193,11 +201,11 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMElement $targetTag
+	 * @param DOMElement $targetTag
 	 *
 	 * @return ClassMatcher[]
 	 */
-	private function createClassMatchers( \DOMElement $targetTag ) {
+	private function createClassMatchers( DOMElement $targetTag ) {
 		$classMatchers = [];
 		$classValue = $targetTag->getAttribute( 'class' );
 		foreach ( explode( ' ', $classValue ) as $expectedClass ) {
@@ -210,12 +218,12 @@ class ComplexTagMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMElement $element
+	 * @param DOMElement $element
 	 *
 	 * @return string
 	 */
-	private function elementToString( \DOMElement $element ) {
-		$newDocument = new \DOMDocument();
+	private function elementToString( DOMElement $element ) {
+		$newDocument = new DOMDocument();
 		$cloned = $element->cloneNode( true );
 		$newDocument->appendChild( $newDocument->importNode( $cloned, true ) );
 		return trim( $newDocument->saveHTML() );

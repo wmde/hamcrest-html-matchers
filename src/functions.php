@@ -1,33 +1,42 @@
 <?php
 
 use Hamcrest\Matcher;
+use WMDE\HamcrestHtml\AttributeMatcher;
+use WMDE\HamcrestHtml\ChildElementMatcher;
+use WMDE\HamcrestHtml\ClassMatcher;
+use WMDE\HamcrestHtml\ComplexTagMatcher;
+use WMDE\HamcrestHtml\DirectChildElementMatcher;
+use WMDE\HamcrestHtml\HtmlMatcher;
+use WMDE\HamcrestHtml\RootElementMatcher;
+use WMDE\HamcrestHtml\TagNameMatcher;
+use WMDE\HamcrestHtml\TextContentsMatcher;
 
 if ( !function_exists( 'htmlPiece' ) ) {
 	/**
 	 * @param Matcher|null $elementMatcher
 	 *
-	 * @return \WMDE\HamcrestHtml\HtmlMatcher
+	 * @return HtmlMatcher
 	 */
 	function htmlPiece( Matcher $elementMatcher = null ) {
-		return \WMDE\HamcrestHtml\HtmlMatcher::htmlPiece( $elementMatcher );
+		return HtmlMatcher::htmlPiece( $elementMatcher );
 	}
 }
 
 if ( !function_exists( 'havingRootElement' ) ) {
 	function havingRootElement( Matcher $matcher = null ) {
-		return \WMDE\HamcrestHtml\RootElementMatcher::havingRootElement( $matcher );
+		return RootElementMatcher::havingRootElement( $matcher );
 	}
 }
 
 if ( !function_exists( 'havingDirectChild' ) ) {
 	function havingDirectChild( Matcher $elementMatcher = null ) {
-		return \WMDE\HamcrestHtml\DirectChildElementMatcher::havingDirectChild( $elementMatcher );
+		return DirectChildElementMatcher::havingDirectChild( $elementMatcher );
 	}
 }
 
 if ( !function_exists( 'havingChild' ) ) {
 	function havingChild( Matcher $elementMatcher = null ) {
-		return \WMDE\HamcrestHtml\ChildElementMatcher::havingChild( $elementMatcher );
+		return ChildElementMatcher::havingChild( $elementMatcher );
 	}
 }
 
@@ -35,10 +44,10 @@ if ( !function_exists( 'withTagName' ) ) {
 	/**
 	 * @param Matcher|string $tagName
 	 *
-	 * @return \WMDE\HamcrestHtml\TagNameMatcher
+	 * @return TagNameMatcher
 	 */
 	function withTagName( $tagName ) {
-		return \WMDE\HamcrestHtml\TagNameMatcher::withTagName( $tagName );
+		return TagNameMatcher::withTagName( $tagName );
 	}
 }
 
@@ -46,10 +55,10 @@ if ( !function_exists( 'withAttribute' ) ) {
 	/**
 	 * @param Matcher|string $attributeName
 	 *
-	 * @return \WMDE\HamcrestHtml\AttributeMatcher
+	 * @return AttributeMatcher
 	 */
 	function withAttribute( $attributeName ) {
-		return \WMDE\HamcrestHtml\AttributeMatcher::withAttribute( $attributeName );
+		return AttributeMatcher::withAttribute( $attributeName );
 	}
 }
 
@@ -57,12 +66,12 @@ if ( !function_exists( 'withClass' ) ) {
 	/**
 	 * @param Matcher|string $class
 	 *
-	 * @return \WMDE\HamcrestHtml\ClassMatcher
+	 * @return ClassMatcher
 	 */
 	function withClass( $class ) {
 		// TODO don't allow to call with empty string
 
-		return \WMDE\HamcrestHtml\ClassMatcher::withClass( $class );
+		return ClassMatcher::withClass( $class );
 	}
 }
 
@@ -70,10 +79,10 @@ if ( !function_exists( 'havingTextContents' ) ) {
 	/**
 	 * @param Matcher|string $text
 	 *
-	 * @return \WMDE\HamcrestHtml\TextContentsMatcher
+	 * @return TextContentsMatcher
 	 */
 	function havingTextContents( $text ) {
-		return \WMDE\HamcrestHtml\TextContentsMatcher::havingTextContents( $text );
+		return TextContentsMatcher::havingTextContents( $text );
 	}
 }
 
@@ -81,9 +90,9 @@ if ( !function_exists( 'tagMatchingOutline' ) ) {
 	/**
 	 * @param string $htmlOutline
 	 *
-	 * @return \WMDE\HamcrestHtml\ComplexTagMatcher
+	 * @return ComplexTagMatcher
 	 */
 	function tagMatchingOutline( $htmlOutline ) {
-		return \WMDE\HamcrestHtml\ComplexTagMatcher::tagMatchingOutline( $htmlOutline );
+		return ComplexTagMatcher::tagMatchingOutline( $htmlOutline );
 	}
 }

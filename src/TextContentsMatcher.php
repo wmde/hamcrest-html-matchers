@@ -37,7 +37,9 @@ class TextContentsMatcher extends TagMatcher {
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		return $this->matcher->matches( $item->textContent );
 	}
 

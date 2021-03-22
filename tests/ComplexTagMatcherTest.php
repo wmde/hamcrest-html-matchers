@@ -2,135 +2,108 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use Exception;
 use Hamcrest\AssertionError;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use ValueError;
 use WMDE\HamcrestHtml\ComplexTagMatcher;
 
 /**
- * @covers WMDE\HamcrestHtml\ComplexTagMatcher
+ * @covers \WMDE\HamcrestHtml\ComplexTagMatcher
  */
-class ComplexTagMatcherTest extends \PHPUnit\Framework\TestCase {
+class ComplexTagMatcherTest extends TestCase {
 
-	/**
-	 * @test
-	 */
-	public function assertPasses_WhenTagInHtmlHasSameTagName() {
+	public function testAssertPasses_WhenTagInHtmlHasSameTagName() {
 		$html = '<p></p>';
 
-		assertThat( $html, is( htmlPiece( havingChild( ComplexTagMatcher::tagMatchingOutline( '<p/>' ) ) ) ) );
+		assertThat( $html, is( htmlPiece( havingChild(
+			ComplexTagMatcher::tagMatchingOutline( '<p/>' )
+		) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertFails_WhenTagInHtmlIsDiffersFromGivenTagName() {
+	public function testAssertFails_WhenTagInHtmlIsDiffersFromGivenTagName() {
 		$html = '<a></a>';
 
-		$this->setExpectedException( AssertionError::class );
-		assertThat( $html, is( htmlPiece( havingChild( ComplexTagMatcher::tagMatchingOutline( '<p/>' ) ) ) ) );
+		$this->expectException( AssertionError::class );
+		assertThat( $html, is( htmlPiece( havingChild(
+			ComplexTagMatcher::tagMatchingOutline( '<p/>' )
+		) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function canNotCreateMatcherWithEmptyDescription() {
-		$this->setExpectedException( \Exception::class );
+	public function testCanNotCreateMatcherWithEmptyDescription() {
+		if ( PHP_VERSION_ID > 80000 ) {
+			$this->expectException( ValueError::class );
+		} else {
+			$this->expectException( InvalidArgumentException::class );
+		}
 		ComplexTagMatcher::tagMatchingOutline( '' );
 	}
 
-	/**
-	 * @test
-	 */
-	public function canNotCreateMatcherExpectingTwoElements() {
-		$this->setExpectedException( \Exception::class );
+	public function testCanNotCreateMatcherExpectingTwoElements() {
+		$this->expectException( Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p></p><b></b>' );
 	}
 
-	/**
-	 * @test
-	 */
-	public function canNotCreateMatcherWithChildElement() {
-		$this->setExpectedException( \Exception::class );
+	public function testCanNotCreateMatcherWithChildElement() {
+		$this->expectException( Exception::class );
 		ComplexTagMatcher::tagMatchingOutline( '<p><b></b></p>' );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertFails_WhenTagInHtmlDoesNotHaveExpectedAttribute() {
+	public function testAssertFails_WhenTagInHtmlDoesNotHaveExpectedAttribute() {
 		$html = '<p></p>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<p id="some-id"/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertPasses_WhenTagInHtmlHasExpectedAttribute() {
+	public function testAssertPasses_WhenTagInHtmlHasExpectedAttribute() {
 		$html = '<p id="some-id"></p>';
 
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<p id="some-id"/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertFails_WhenTagInHtmlDoesNotHaveAllExpectedAttribute() {
+	public function testAssertFails_WhenTagInHtmlDoesNotHaveAllExpectedAttribute() {
 		$html = '<p id="some-id"></p>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<p id="some-id" onclick="void();"/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertPasses_WhenExpectBooleanAttributeButItIsThereWithSomeValue() {
+	public function testAssertPasses_WhenExpectBooleanAttributeButItIsThereWithSomeValue() {
 		$html = '<input required="anything">';
 
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input required/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertFails_WhenExpectAttributeWithEmptyValueButItIsNotEmpty() {
+	public function testAssertFails_WhenExpectAttributeWithEmptyValueButItIsNotEmpty() {
 		$html = '<input attr1="something">';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input attr1=""/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertPasses_WhenGivenTagHasExpectedClass() {
+	public function testAssertPasses_WhenGivenTagHasExpectedClass() {
 		$html = '<input class="class1 class2">';
 
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input class="class2"/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function assertFails_WhenGivenTagDoesNotHaveExpectedClass() {
+	public function testAssertFails_WhenGivenTagDoesNotHaveExpectedClass() {
 		$html = '<input class="class1 class2">';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingChild(
 			ComplexTagMatcher::tagMatchingOutline( '<input class="class3"/>' ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function toleratesExtraSpacesInClassDescription() {
+	public function testToleratesExtraSpacesInClassDescription() {
 		$html = '<input class="class1">';
 
 		assertThat( $html, is( htmlPiece( havingChild(

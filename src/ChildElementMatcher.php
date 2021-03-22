@@ -2,6 +2,8 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMDocument;
+use DOMNode;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\TypeSafeDiagnosingMatcher;
@@ -18,7 +20,7 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	}
 
 	public function __construct( Matcher $matcher = null ) {
-		parent::__construct( \DOMNode::class );
+		parent::__construct( DOMNode::class );
 		$this->matcher = $matcher;
 	}
 
@@ -30,13 +32,15 @@ class ChildElementMatcher extends TypeSafeDiagnosingMatcher {
 	}
 
 	/**
-	 * @param \DOMDocument|\DOMNode $item
+	 * @param DOMDocument|DOMNode $item
 	 * @param Description $mismatchDescription
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
-		if ( $item instanceof \DOMDocument ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
+		if ( $item instanceof DOMDocument ) {
 			$directChildren = $item->documentElement->childNodes->item( 0 )->childNodes;
 		} else {
 			$directChildren = $item->childNodes;

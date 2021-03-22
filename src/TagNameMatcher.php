@@ -2,6 +2,7 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMElement;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\Util;
@@ -33,12 +34,14 @@ class TagNameMatcher extends TagMatcher {
 	}
 
 	/**
-	 * @param \DOMElement $item
+	 * @param DOMElement $item
 	 * @param Description $mismatchDescription
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		if ( $this->tagNameMatcher->matches( $item->tagName ) ) {
 			return true;
 		}

@@ -2,18 +2,19 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use DOMDocument;
+use PHPUnit\Framework\TestCase;
 use WMDE\HamcrestHtml\HtmlMatcher;
 
 /**
- * @covers WMDE\HamcrestHtml\HtmlMatcher
+ * @covers \WMDE\HamcrestHtml\HtmlMatcher
  */
-class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
+class HtmlMatcherTest extends TestCase {
 
 	/**
-	 * @test
 	 * @dataProvider dataProvider_HtmlTagNamesIntroducedInHtml5
 	 */
-	public function considersValidHtml_WhenUnknownForHtmlParserTagIsGiven( $tagIntroducedInHtml5 ) {
+	public function testConsidersValidHtml_WhenUnknownForHtmlParserTagIsGiven( $tagIntroducedInHtml5 ) {
 		$html = "<$tagIntroducedInHtml5></$tagIntroducedInHtml5>";
 
 		assertThat( $html, is( HtmlMatcher::htmlPiece() ) );
@@ -56,10 +57,7 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-	/**
-	 * @test
-	 */
-	public function considersValidHtml_WHtmlContainsScriptTagWithHtmlContents() {
+	public function testConsidersValidHtml_WHtmlContainsScriptTagWithHtmlContents() {
 		$html = "<div>
 <script type='x-template'>
 	<span></span>
@@ -69,10 +67,7 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 		assertThat( $html, is( HtmlMatcher::htmlPiece() ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function addsSpecificTextInsideTheScriptTagsInsteadOfItsContents() {
+	public function testAddsSpecificTextInsideTheScriptTagsInsteadOfItsContents() {
 		$html = "<div>
 <script type='x-template'><span></span></script>
 </div>";
@@ -82,10 +77,7 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 				->andAlso( havingTextContents( "<span><\\/span>" ) ) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function doesNotTouchScriptTagAttributes() {
+	public function testDoesNotTouchScriptTagAttributes() {
 		$html = "<div>
 <script type='x-template' attr1='value1'>
 	<span></span>
@@ -100,12 +92,9 @@ class HtmlMatcherTest extends \PHPUnit\Framework\TestCase {
 			) ) ) ) );
 	}
 
-	/**
-	 * @test
-	 */
-	public function considersValidHtml_WhenUnrelatedXMLErrors() {
+	public function testConsidersValidHtml_WhenUnrelatedXMLErrors() {
 		libxml_use_internal_errors( true );
-		$document = new \DOMDocument();
+		$document = new DOMDocument();
 		$document->loadHTML( 'ThisIsNoHTML<' );
 
 		assertThat( '<html></html>', is( HtmlMatcher::htmlPiece() ) );

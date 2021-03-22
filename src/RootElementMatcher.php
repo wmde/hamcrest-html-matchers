@@ -2,6 +2,7 @@
 
 namespace WMDE\HamcrestHtml;
 
+use DOMDocument;
 use Hamcrest\Description;
 use Hamcrest\Matcher;
 use Hamcrest\TypeSafeDiagnosingMatcher;
@@ -9,7 +10,7 @@ use Hamcrest\TypeSafeDiagnosingMatcher;
 class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 
 	/**
-	 * @var Matcher
+	 * @var Matcher|null
 	 */
 	private $tagMatcher;
 
@@ -23,7 +24,7 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 	}
 
 	public function __construct( Matcher $tagMatcher = null ) {
-		parent::__construct( self::TYPE_OBJECT, \DOMDocument::class );
+		parent::__construct( self::TYPE_OBJECT, DOMDocument::class );
 		$this->tagMatcher = $tagMatcher;
 	}
 
@@ -35,12 +36,14 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 	}
 
 	/**
-	 * @param \DOMDocument $item
+	 * @param DOMDocument $item
 	 * @param Description $mismatchDescription
 	 *
 	 * @return bool
 	 */
-	protected function matchesSafelyWithDiagnosticDescription( $item, Description $mismatchDescription ) {
+	protected function matchesSafelyWithDiagnosticDescription(
+		$item, Description $mismatchDescription
+	) {
 		$DOMNodeList = $item->documentElement->childNodes->item( 0 )->childNodes;
 		if ( $DOMNodeList->length > 1 ) {
 			// TODO Test this description

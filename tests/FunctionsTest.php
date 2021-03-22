@@ -2,39 +2,36 @@
 
 namespace WMDE\HamcrestHtml\Test;
 
+use Exception;
 use Hamcrest\AssertionError;
 use Hamcrest\Matcher;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends \PHPUnit\Framework\TestCase {
+class FunctionsTest extends TestCase {
 
-	/**
-	 * @test
-	 */
-	public function havingRootElement_MultipleRootTags_ThrowsException() {
+	public function testHavingRootElement_MultipleRootTags_ThrowsException() {
 		// TODO Does it make sense?
 		$html = '<p></p><p></p>';
 
-		$this->setExpectedException( AssertionError::class );
+		$this->expectException( AssertionError::class );
 		assertThat( $html, is( htmlPiece( havingRootElement() ) ) );
 	}
 
 	/**
-	 * @test
 	 * @dataProvider dataProvider_ElementExists
 	 */
-	public function matcherCanFindElement( $html, $matcher ) {
+	public function testMatcherCanFindElement( $html, $matcher ) {
 		assertThat( $html, is( htmlPiece( $matcher ) ) );
 	}
 
 	/**
-	 * @test
 	 * @dataProvider dataProvider_ElementDoesNotExist
 	 */
-	public function matcherCantFindElement( $html, $matcher, Matcher $messageMatcher ) {
+	public function testMatcherCantFindElement( $html, $matcher, Matcher $messageMatcher ) {
 		$thrownException = null;
 		try {
 			assertThat( $html, is( htmlPiece( $matcher ) ) );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$thrownException = $e;
 		}
 
@@ -167,7 +164,9 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase {
 				'<p><input name="something-else"/></p>',
 				havingChild( withAttribute( 'name' )->havingValue( 'something' ) ),
 				both( containsString( 'having child with attribute "name" having value "something"' ) )
-					->andAlso( containsString( 'having no children with attribute "name" having value "something"' ) )
+					->andAlso( containsString(
+						'having no children with attribute "name" having value "something"'
+					) )
 			],
 			'withClass - no class' => [
 				'<p></p>',
@@ -179,7 +178,9 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase {
 				'<div><p>this is some text</p></div>',
 				havingChild( havingTextContents( 'this is another text' ) ),
 				both( containsString( 'having child having text contents "this is another text"' ) )
-					->andAlso( containsString( 'no children having text contents "this is another text"' ) )
+					->andAlso( containsString(
+						'no children having text contents "this is another text"'
+					) )
 			],
 			'havingTextContents - does not respect text in comments;' => [
 				'<div><!--commented text--></div>',
