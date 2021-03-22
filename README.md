@@ -1,6 +1,6 @@
 This is the set of Hamcrest matchers for HTML assertions
 ========================================================
-[![Build Status](https://travis-ci.org/wmde/hamcrest-html-matchers.svg?branch=master)](https://travis-ci.org/wmde/hamcrest-html-matchers)
+[![Build Status](https://github.com/wmde/hamcrest-html-matchers/actions/workflows/php.yml/badge.svg)](https://github.com/wmde/hamcrest-html-matchers/actions/workflows/php.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wmde/hamcrest-html-matchers/?branch=master)
 
