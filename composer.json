@@ -16,7 +16,7 @@
 		"hamcrest/hamcrest-php": "^2.0.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "35.0.0",
+		"mediawiki/mediawiki-codesniffer": "38.0.0",
 		"mediawiki/mediawiki-phan-config": "0.10.6",
 		"php-parallel-lint/php-console-highlighter": "0.5",
 		"php-parallel-lint/php-parallel-lint": "1.2.0",
