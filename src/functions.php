@@ -96,3 +96,16 @@ if ( !function_exists( 'tagMatchingOutline' ) ) {
 		return ComplexTagMatcher::tagMatchingOutline( $htmlOutline );
 	}
 }
+
+if ( !function_exists( 'containsStringIgnoringWhiteSpace' ) ) {
+	/**
+	 * @param string $substring
+	 *
+	 * @return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace
+	 */
+	function containsStringIgnoringWhiteSpace( $substring ) {
+		return \WMDE\HamcrestHtml\StringContainsIgnoringWhiteSpace::containsStringIgnoringWhiteSpace(
+			$substring
+		);
+	}
+}
