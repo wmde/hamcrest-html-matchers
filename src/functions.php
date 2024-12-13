@@ -17,25 +17,25 @@ if ( !function_exists( 'htmlPiece' ) ) {
 	 *
 	 * @return HtmlMatcher
 	 */
-	function htmlPiece( Matcher $elementMatcher = null ) {
+	function htmlPiece( ?Matcher $elementMatcher = null ) {
 		return HtmlMatcher::htmlPiece( $elementMatcher );
 	}
 }
 
 if ( !function_exists( 'havingRootElement' ) ) {
-	function havingRootElement( Matcher $matcher = null ) {
+	function havingRootElement( ?Matcher $matcher = null ) {
 		return RootElementMatcher::havingRootElement( $matcher );
 	}
 }
 
 if ( !function_exists( 'havingDirectChild' ) ) {
-	function havingDirectChild( Matcher $elementMatcher = null ) {
+	function havingDirectChild( ?Matcher $elementMatcher = null ) {
 		return DirectChildElementMatcher::havingDirectChild( $elementMatcher );
 	}
 }
 
 if ( !function_exists( 'havingChild' ) ) {
-	function havingChild( Matcher $elementMatcher = null ) {
+	function havingChild( ?Matcher $elementMatcher = null ) {
 		return ChildElementMatcher::havingChild( $elementMatcher );
 	}
 }
