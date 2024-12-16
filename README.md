@@ -88,7 +88,7 @@ Available Matchers
         havingTextContents(containsString('some text')->ignoringCase()))));
     ```
 
-* `tagMatchingOutline` - tolerantly checks that tag matches given *outline* (*outline* - tag representation in HTML format)\
+* `tagMatchingOutline` - tolerantly checks that tag matches given *outline* (*outline* - tag representation in HTML format)
 
   That means:
     * Element's tag name is equal to outline's tag name
