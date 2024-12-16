@@ -26,11 +26,11 @@ class HtmlMatcher extends DiagnosingMatcher {
 	 *
 	 * @return self
 	 */
-	public static function htmlPiece( Matcher $elementMatcher = null ) {
+	public static function htmlPiece( ?Matcher $elementMatcher = null ) {
 		return new static( $elementMatcher );
 	}
 
-	private function __construct( Matcher $elementMatcher = null ) {
+	private function __construct( ?Matcher $elementMatcher = null ) {
 		$this->elementMatcher = $elementMatcher;
 	}
 
@@ -107,7 +107,7 @@ class HtmlMatcher extends DiagnosingMatcher {
 	 * @return string HTML
 	 */
 	private function escapeScriptTagContents( $html ) {
-		return preg_replace_callback( '#(<script.*>)(.*)(</script>)#isU', function ( $matches ) {
+		return preg_replace_callback( '#(<script.*>)(.*)(</script>)#isU', static function ( $matches ) {
 			return $matches[1] . str_replace( '</', '<\/', $matches[2] ) . $matches[3];
 		}, $html );
 	}

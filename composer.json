@@ -9,14 +9,14 @@
 		}
 	],
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"ext-dom": "*",
 		"ext-libxml": "*",
 		"ext-mbstring": "*",
 		"hamcrest/hamcrest-php": "^2.0.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "35.0.0",
+		"mediawiki/mediawiki-codesniffer": "45.0.0",
 		"mediawiki/mediawiki-phan-config": "0.10.6",
 		"php-parallel-lint/php-console-highlighter": "0.5",
 		"php-parallel-lint/php-parallel-lint": "1.2.0",
@@ -36,21 +36,26 @@
 		}
 	},
 	"scripts": {
-		"ci": "composer test",
+		"ci": "@test",
 		"fix": "phpcbf",
 		"lint": "parallel-lint --exclude vendor .",
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -p -s",
 		"phpunit": "phpunit",
 		"test": [
-			"composer lint",
-			"composer phpcs",
-			"composer phpunit"
+			"@lint",
+			"@phpcs",
+			"@phpunit"
 		]
 	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "0.1.x-dev"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	}
 }

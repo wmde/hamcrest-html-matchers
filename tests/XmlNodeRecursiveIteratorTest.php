@@ -50,7 +50,7 @@ class XmlNodeRecursiveIteratorTest extends TestCase {
 	 */
 	protected function collectTagNames( $recursiveIterator ) {
 		$array = iterator_to_array( $recursiveIterator );
-		return array_map( function ( \DOMElement $node ) {
+		return array_map( static function ( \DOMElement $node ) {
 			return $node->tagName;
 		}, $array );
 	}

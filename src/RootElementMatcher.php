@@ -19,11 +19,11 @@ class RootElementMatcher extends TypeSafeDiagnosingMatcher {
 	 *
 	 * @return static
 	 */
-	public static function havingRootElement( Matcher $tagMatcher = null ) {
+	public static function havingRootElement( ?Matcher $tagMatcher = null ) {
 		return new static( $tagMatcher );
 	}
 
-	public function __construct( Matcher $tagMatcher = null ) {
+	public function __construct( ?Matcher $tagMatcher = null ) {
 		parent::__construct( self::TYPE_OBJECT, DOMDocument::class );
 		$this->tagMatcher = $tagMatcher;
 	}
